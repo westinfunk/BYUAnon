@@ -1,11 +1,15 @@
 import { Navigation } from 'react-native-navigation';
 
-import First from './FirstScreen';
-import Second from './SecondScreen';
-import Pushed from './PushedScreen';
+import ComposeMessage from './ComposeMessageScreen';
+import Message from './MessageScreen';
+import NewMessages from './NewMessagesScreen';
+import TopMessages from './TopMessagesScreen';
+import Profile from './ProfileScreen';
 
 export function registerScreens() {
-  Navigation.registerComponent('First', () => First);
-  Navigation.registerComponent('Second', () => Second);
-  Navigation.registerComponent('Pushed', () => Pushed);
+  Navigation.registerComponent('ComposeMessage', () => ComposeMessage);
+  Navigation.registerComponent('Message', () => Message);
+  Navigation.registerComponent('NewMessages', () => NewMessages);
+  Navigation.registerComponent('TopMessages', () => TopMessages);
+  Navigation.registerComponent('Profile', () => Profile);
 }
