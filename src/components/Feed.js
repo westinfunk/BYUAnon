@@ -12,7 +12,7 @@ export default class Feed extends Component {
     console.log(this.props);
   }
 
-  renderSeparator = () => {
+  renderSeparator() {
     return (
       <View
         style={{
@@ -22,7 +22,7 @@ export default class Feed extends Component {
         <View style={{ height: 2, backgroundColor: '#eeeeee', margin: 1 }} />
       </View>
     );
-  };
+  }
 
   render() {
     const emptyMessage = 'There seems to be nothing here';
@@ -33,7 +33,12 @@ export default class Feed extends Component {
       return (
         <FlatList
           data={this.props.messages}
-          renderItem={({ item, index }) => <FeedItem {...item} />}
+          renderItem={({ item, index }) => (
+            <FeedItem
+              {...item}
+              navigateToReplies={this.props.navigateToReplies}
+            />
+          )}
           ItemSeparatorComponent={this.renderSeparator}
         />
       );

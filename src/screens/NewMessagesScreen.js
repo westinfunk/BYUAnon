@@ -32,10 +32,22 @@ export default class NewMessages extends Component {
     }
   }
 
+  navigateToReplies(messageData) {
+    this.props.navigator.push({
+      screen: 'Message',
+      title: 'Details',
+      backButtonTitle: '',
+      passProps: messageData
+    });
+  }
+
   render() {
     return (
       <View style={Styles.container}>
-        <Feed messages={messages} />
+        <Feed
+          messages={messages}
+          navigateToReplies={this.navigateToReplies.bind(this)}
+        />
       </View>
     );
   }
@@ -49,32 +61,47 @@ const Styles = StyleSheet.create({
 
 const messages = [
   {
+    id: '2374987234',
     text: 'okay man',
     score: 13,
-    key: '1'
+    key: '1',
+    replyCount: 3,
+    vote: 'up'
   },
   {
+    id: '2374987234',
     text:
       'asdfjj alskdj laskdj a;lkdsv ;lvkjads; kldf;jlvas kads;jdfa ;lkasdjldfsa',
     score: 1,
-    key: '2'
+    key: '2',
+    replyCount: 3,
+    vote: null
   },
   {
+    id: '2374987234',
     text:
       'fjal;skj;vlk c,.mds dsfj;kld jas;l adsl vj;ads ;lsdak;fda ;jlfadksj ;f;kl fweoieurriew;jaf;k lfsaj; f;l sd;l vklvj; asdf',
     score: 200,
-    key: '3'
+    key: '3',
+    replyCount: 3,
+    vote: 'down'
   },
   {
+    id: '2374987234',
     text:
       'v,.cj .xc,cx pdsjkl;afj kej 38742 i234jo iwrj09fe jr23klfklj v0v i32k 40 v efawjklafwj a0f23 i4jlf09fj23jpor3j-ijorjl2 3kl f09f2j 32kljf0f2j23lkjf0 f 0 23',
     score: 23,
-    key: '4'
+    key: '4',
+    replyCount: 3,
+    vote: 'up'
   },
   {
+    id: '2374987234',
     text:
       'n,vmmncxcx kljdslk sadf;a ;ldsakj;v ;90aj ;fj ;fw099fj2ljl3lkrj 9009u lkaj aslkj lfl kv,mcvxn, x,m lwekj lf092934jlk2jl',
     score: 5,
-    key: '5'
+    key: '5',
+    replyCount: 3,
+    vote: 'up'
   }
 ];

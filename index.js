@@ -11,14 +11,19 @@ registerScreens();
 Navigation.startTabBasedApp({
   tabs: [
     {
-      label: 'One',
-      screen: 'First',
-      title: 'First Screen'
+      label: 'New',
+      screen: 'NewMessages',
+      title: 'New'
     },
     {
-      label: 'Two',
-      screen: 'Second',
-      title: 'Second Screen'
+      label: 'Top',
+      screen: 'TopMessages',
+      title: 'Top'
+    },
+    {
+      label: 'Profile',
+      screen: 'Profile',
+      title: 'Profile'
     }
   ]
 });

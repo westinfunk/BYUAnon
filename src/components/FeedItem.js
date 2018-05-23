@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { Text, StyleSheet, View, TouchableHighlight } from 'react-native';
+import ScoreBox from '../components/ScoreBox';
 
 export default class FeedItem extends Component {
   constructor(props) {
@@ -29,22 +30,38 @@ export default class FeedItem extends Component {
               <Text>{time}</Text>
             </View>
             <View style={Styles.replyCountArea}>
-              <Text>{replyCount}</Text>
+              <TouchableHighlight
+                onPress={() =>
+                  this.props.navigateToReplies({
+                    id: this.props.id,
+                    text: this.props.text,
+                    time: this.props.time,
+                    score: this.props.score,
+                    replyCount: this.props.replyCount
+                  })
+                }
+              >
+                <Text>{replyCount}</Text>
+              </TouchableHighlight>
             </View>
           </View>
         </View>
-        <View style={Styles.score}>
-          <TouchableHighlight>
-            <Text>^</Text>
-          </TouchableHighlight>
-          <Text>{this.props.score}</Text>
-          <TouchableHighlight>
-            <Text>v</Text>
-          </TouchableHighlight>
-        </View>
+        <ScoreBox score={this.props.score} vote={this.props.vote} />
       </View>
     );
   }
+}
+
+{
+  /* <View style={Styles.score}>
+  <TouchableHighlight>
+    <Text>^</Text>
+  </TouchableHighlight>
+  <Text>{this.props.score}</Text>
+  <TouchableHighlight>
+    <Text>v</Text>
+  </TouchableHighlight>
+</View>; */
 }
 
 const Styles = StyleSheet.create({
