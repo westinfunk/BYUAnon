@@ -51,9 +51,9 @@ const Styles = StyleSheet.create({
   container: {
     flex: 1,
     flexDirection: 'row',
-    minHeight: 90,
+    minHeight: 80,
     backgroundColor: '#FFFFFF',
-    padding: 5
+    padding: 10
   },
   score: {
     width: 60,

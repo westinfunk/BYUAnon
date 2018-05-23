@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { View, Text, TouchableHighlight, StyleSheet } from 'react-native';
 import Feed from '../components/Feed';
+import { registerDevice } from '../Utils';
 
 export default class NewMessages extends Component {
   static navigatorButtons = {
@@ -14,8 +15,11 @@ export default class NewMessages extends Component {
 
   constructor(props) {
     super(props);
-
     this.props.navigator.setOnNavigatorEvent(this.onNavigatorEvent.bind(this));
+  }
+
+  componentDidMount() {
+    registerDevice();
   }
 
   onNavigatorEvent(event) {
