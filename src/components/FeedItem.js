@@ -66,17 +66,10 @@ export default class FeedItem extends Component {
 
 const Styles = StyleSheet.create({
   container: {
-    flex: 1,
     flexDirection: 'row',
     minHeight: 80,
     backgroundColor: '#FFFFFF',
     padding: 10
-  },
-  score: {
-    width: 60,
-    backgroundColor: '#FFFFFF',
-    alignItems: 'center',
-    justifyContent: 'center'
   },
   body: {
     flex: 1

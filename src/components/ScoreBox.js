@@ -94,8 +94,11 @@ export default class ScoreBox extends Component {
 const Styles = StyleSheet.create({
   container: {
     justifyContent: 'center',
+    alignSelf: 'flex-end',
     alignItems: 'center',
-    width: 60
+    width: 60,
+    flex: 1,
+    backgroundColor: '#DDDDDD'
   },
   upvote: {
     backgroundColor: '#CCCCCC'
