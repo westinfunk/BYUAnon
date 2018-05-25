@@ -7,11 +7,16 @@
     "test": "jest"
   },
   "dependencies": {
+    "async-redis": "^1.1.4",
     "body-parser": "^1.18.3",
     "express": "^4.16.3",
+    "ipware": "^1.0.0",
+    "lodash": "^4.17.10",
+    "nodejs-base64-encode": "0.0.2",
     "react": "16.3.1",
     "react-native": "0.55.4",
-    "react-native-navigation": "^1.1.462"
+    "react-native-navigation": "^1.1.462",
+    "redis": "^2.8.0"
   },
   "devDependencies": {
     "babel-jest": "22.4.4",

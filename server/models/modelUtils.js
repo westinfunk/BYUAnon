@@ -7,7 +7,7 @@ const USER_PREFIX = 'user:';
 const MESSAGE_PREFIX = 'message:';
 const REPLY_PREFIX = 'reply:';
 
-const generateId = async type => {
+const generateId = async (type) => {
   try {
     if (type !== 'user' && type !== 'message' && type !== 'reply') {
       throw new Error(
@@ -30,6 +30,8 @@ const generateId = async type => {
   }
 };
 
+const timestamp = () => Math.floor(Date.now() / 1000);
+
 const getMessageOrReplyDataFromId = async (
   messageId,
   userId,
@@ -37,17 +39,19 @@ const getMessageOrReplyDataFromId = async (
 ) => {
   /* 
     pulls full message/reply data from Redis for each message/reply id
-    returns an array of message/reply objects with appropriate data to send to client
+    returns an array of message/reply objects
     
     FORMAT OF RETURNED MESSAGE/REPLY OBJECTS
     {
       id: string,
       text: string,
-      isAuthor: bool,
-      score: int,
+      author: string,
+      deleted: bool,
+      upvoteCount: int,
+      downvotecount: int,
+      userUpvoted: bool,
+      userDownvoted: bool,
       timestamp: string
-      vote: 'up' or 'down'
-    }
     */
   try {
     if (messageOrReply !== 'message' && messageOrReply !== 'reply') {
@@ -57,27 +61,20 @@ const getMessageOrReplyDataFromId = async (
     }
     const prefix = messageOrReply == 'message' ? MESSAGE_PREFIX : REPLY_PREFIX;
 
-    let message = {};
     const messageData = await redis.get(`${prefix}${messageId}`);
-    if (messageData.deleted === 'true') return null;
-
-    const upvoteCount = await redis.scard(`${prefix}${messageId}:upvotes`);
-    const downvoteCount = await redis.scard(`${prefix}${messageId}:downvotes`);
-    const userUpvoted = await redis.ismember(`${prefix}${userId}:upvotes`);
-    const userDownvoted = await redis.ismember(`${prefix}${userId}:downvotes`);
-    message.id = id;
-    message.text = messageData.text;
-    message.timestamp = messageData.timestamp;
-    message.score = upvoteCount - downvoteCount;
-    message.isAuthor = messageData.author === userId;
-    if (userUpvoted) {
-      message.vote = 'up';
-    } else if (userDownvoted) {
-      message.vote = 'down';
-    } else {
-      message.vote = null;
-    }
-    return message;
+    messageData.upvoteCount = await redis.scard(
+      `${prefix}${messageId}:upvotes`
+    );
+    messageData.downvoteCount = await redis.scard(
+      `${prefix}${messageId}:downvotes`
+    );
+    messageData.userUpvoted = await redis.ismember(
+      `${prefix}${userId}:upvotes`
+    );
+    messageData.userDownvoted = await redis.ismember(
+      `${prefix}${userId}:downvotes`
+    );
+    return messageData;
   } catch (error) {
     console.log(error, new Date());
   }
@@ -90,5 +87,6 @@ module.exports = {
   USER_PREFIX,
   MAX_NUMBER_OF_ELEMENTS_TO_LOAD,
   getMessageOrReplyDataFromId,
-  generateId
+  generateId,
+  timestamp
 };

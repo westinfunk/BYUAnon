@@ -5,7 +5,8 @@ const {
   MESSAGE_PREFIX,
   REPLY_PREFIX,
   MAX_NUMBER_OF_ELEMENTS_TO_LOAD,
-  getMessageOrReplyDataFromId
+  getMessageOrReplyDataFromId,
+  timestamp
 } = require('./modelUtils');
 
 /*
@@ -23,7 +24,7 @@ const addNewUser = async (userId, ipAddress) => {
     const userStorageObject = {
       ip: ipAddress,
       score: 10,
-      timestamp: Math.floor(Date.now() / 1000)
+      timestamp: timestamp()
     };
     await redis.hmset(`${PREFIX}${userId}`, userStorageObject);
   } catch (error) {
@@ -35,7 +36,7 @@ const getUserMessages = async (userId, lastMessageId) => {
   //returns list of messages user posted
   try {
     const userMessageIds = await redis.lrange(
-      `${MESSAGE_PREFIX}${userId}:message`,
+      `user:${userId}:message`,
       0,
       MAX_NUMBER_OF_ELEMENTS_TO_LOAD
     );
@@ -51,13 +52,40 @@ const getUserReplies = async (userId, lastMessageId) => {
   //returns list of messages user replied to
   try {
     const userMessageIds = await redis.lrange(
-      `${REPLY_PREFIX}${userId}:message`,
+      `user:${userId}:message`,
       0,
       MAX_NUMBER_OF_ELEMENTS_TO_LOAD
     );
     const userMessages = userMessageIds.map(messageId =>
       getMessageOrReplyDataFromId(messageId, userId, 'reply')
     );
+  } catch (error) {
+    console.log(error, new Date());
+  }
+};
+
+const decrementUserScore = async (userId, amount = 10) => {
+  try {
+    amount = Math.abs(amount) * -1;
+    return modifyUserScore(userId, amount);
+  } catch (error) {
+    console.log(error, new Date());
+  }
+};
+
+const incrementUserScore = async (userId, amount = 10) => {
+  try {
+    amount = Math.abs(amount);
+    return modifyUserScore(userId, amount);
+  } catch (error) {
+    console.log(error, new Date());
+  }
+};
+
+const modifyUserScore = async (userId, amount) => {
+  try {
+    await redis.hincrby(`user:${userId}`, 'score', amount);
+    return redis.hget(`user:${userId}`, 'score', amount);
   } catch (error) {
     console.log(error, new Date());
   }
