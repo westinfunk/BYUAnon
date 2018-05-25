@@ -1,0 +1,5 @@
+const DEFAULT_NUMBER_OF_ELEMENTS_TO_LOAD = 12;
+
+module.exports = {
+  DEFAULT_NUMBER_OF_ELEMENTS_TO_LOAD
+};
