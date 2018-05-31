@@ -1,13 +1,44 @@
 const redis = require('../db');
-const { handleError } = require('../utils');
 const {
   MESSAGE_PREFIX,
   REPLY_PREFIX,
   MAX_NUMBER_OF_ELEMENTS_TO_LOAD,
   getMessageOrReplyDataFromId,
   generateId,
-  timestamp
+  generateTimestamp,
+  handleError
 } = require('./modelUtils');
+
+/*
+* reply:replyid {
+*      ip: [string],
+*      text: [string], 
+*      author: [string of a user id], 
+*      parent: [string of a message id], 
+*      timestamp: [string], 
+*      deleted: [bool int]
+*    }
+*      :upvote [set of user id]
+*      :downvote [set of user id]
+*/
+
+const getReplyDataFromId = async (replyId, userId) => {
+  try {
+    return await getMessageOrReplyDataFromId(replyId, userId, 'reply');
+  } catch (error) {
+    handleError(error);
+  }
+};
+
+const getReplyDataFromIds = async (replyIds, userId) => {
+  try {
+    return await Promise.all(
+      replyIds.map(async (replyId) => await getReplyDataFromId(replyId, userId))
+    );
+  } catch (error) {
+    handleError(error);
+  }
+};
 
 const getMessageReplies = async (messageId, userId) => {
   try {
@@ -31,13 +62,15 @@ const postMessageReply = async (replyText, messageId, userId, ip) => {
       text: replyText,
       author: userId,
       parent: messageId,
-      timestamp: timestamp(),
+      timestamp: generateTimestamp(),
       deleted: 0
     };
     const replyId = await generateId('reply');
     await redis.hmset('reply:' + replyId, replyData);
-    await redis.rpush('message:' + messageId + ':reply');
-    return 'OK';
+    await redis.lpush('reply', replyId);
+    await redis.lpush('user:' + userId + ':reply', replyId);
+    await redis.rpush('message:' + messageId + ':reply', replyId);
+    return replyId;
   } catch (error) {
     handleError(error);
   }
@@ -91,4 +124,21 @@ const removeDownvoteFromReply = async (replyId, userId) => {
   } catch (error) {
     handleError(error);
   }
+};
+
+const getIdOfParentMessage = async (replyId) => {
+  try {
+    return await redis.hget('reply:' + replyId, 'parent');
+  } catch (error) {
+    handleError(error);
+  }
+};
+
+module.exports = {
+  postMessageReply,
+  getReplyDataFromId,
+  getReplyDataFromIds,
+  getIdOfParentMessage,
+  addDownvoteToReply,
+  addUpvoteToReply
 };

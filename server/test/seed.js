@@ -40,7 +40,7 @@ const seed = async () => {
   });
   await redis.lpush('message', 'm1');
   await redis.lpush('user:' + 'u1' + ':message', 'm1');
-  await redis.zadd('message:hot', 0, 'm1');
+  await redis.zadd('message:top', 0, 'm1');
 
   await redis.hmset('message:' + 'm2', {
     ip: '127.0.1.9',
@@ -51,7 +51,7 @@ const seed = async () => {
   });
   await redis.lpush('message', 'm2');
   await redis.lpush('user:' + 'u1' + ':message', 'm2');
-  await redis.zadd('message:hot', 0, 'm2');
+  await redis.zadd('message:top', 0, 'm2');
 
   await redis.hmset('message:' + 'm3', {
     ip: '127.0.2.9',
@@ -62,7 +62,7 @@ const seed = async () => {
   });
   await redis.lpush('message', 'm3');
   await redis.lpush('user:' + 'u1' + ':message', 'm3');
-  await redis.zadd('message:hot', 0, 'm3');
+  await redis.zadd('message:top', 0, 'm3');
 
   await redis.hmset('message:' + 'm4', {
     ip: '127.3.1.9',
@@ -73,7 +73,7 @@ const seed = async () => {
   });
   await redis.lpush('message', 'm4');
   await redis.lpush('user:' + 'u2' + ':message', 'm4');
-  await redis.zadd('message:hot', 0, 'm4');
+  await redis.zadd('message:top', 0, 'm4');
 
   await redis.hmset('message:' + 'm5', {
     ip: '127.2.8.9',
@@ -84,7 +84,7 @@ const seed = async () => {
   });
   await redis.lpush('message', 'm5');
   await redis.lpush('user:' + 'u2' + ':message', 'm5');
-  await redis.zadd('message:hot', 0, 'm5');
+  await redis.zadd('message:top', 0, 'm5');
 
   await redis.hmset('message:' + 'm6', {
     ip: '127.4.5.9',
@@ -95,7 +95,7 @@ const seed = async () => {
   });
   await redis.lpush('message', 'm6');
   await redis.lpush('user:' + 'u3' + ':message', 'm6');
-  await redis.zadd('message:hot', 0, 'm6');
+  await redis.zadd('message:top', 0, 'm6');
 
   await redis.hmset('message:' + 'm7', {
     ip: '127.3.10.9',
@@ -106,13 +106,13 @@ const seed = async () => {
   });
   await redis.lpush('message', 'm7');
   await redis.lpush('user:' + 'u3' + ':message', 'm7');
-  await redis.zadd('message:hot', 0, 'm7');
+  await redis.zadd('message:top', 0, 'm7');
 
   //create reply
 
   await redis.hmset('reply:' + 'r1', {
     ip: '127.5.5.5',
-    text: 'second reply',
+    text: 'first reply',
     author: 'u1',
     parent: 'm1',
     deleted: 0
@@ -124,7 +124,7 @@ const seed = async () => {
 
   await redis.hmset('reply:' + 'r2', {
     ip: '127.9.5.5',
-    text: 'third reply',
+    text: 'second reply',
     author: 'u2',
     parent: 'm1',
     deleted: 0
@@ -136,7 +136,7 @@ const seed = async () => {
 
   await redis.hmset('reply:' + 'r3', {
     ip: '127.0.5.5',
-    text: 'fourth reply',
+    text: 'third reply',
     author: 'u3',
     parent: 'm1',
     deleted: 0
@@ -148,7 +148,7 @@ const seed = async () => {
 
   await redis.hmset('reply:' + 'r4', {
     ip: '127.5.2.1',
-    text: 'fifth reply',
+    text: 'fourth reply',
     author: 'u1',
     parent: 'm1',
     deleted: 0
@@ -161,28 +161,28 @@ const seed = async () => {
   //upvote messages
   await redis.sadd('message:' + 'm1' + ':upvote', 'u1');
   await redis.hincrby('user:' + 'u1', 'score', 10);
-  await redis.zincrby('message:hot', 1, 'm1');
+  await redis.zincrby('message:top', 1, 'm1');
 
   await redis.sadd('message:' + 'm1' + ':upvote', 'u2');
   await redis.hincrby('user:' + 'u1', 'score', 10);
-  await redis.zincrby('message:hot', 1, 'm1');
+  await redis.zincrby('message:top', 1, 'm1');
 
   await redis.sadd('message:' + 'm1' + ':upvote', 'u3');
   await redis.hincrby('user:' + 'u1', 'score', 10);
-  await redis.zincrby('message:hot', 1, 'm1');
+  await redis.zincrby('message:top', 1, 'm1');
 
   //downvote messages
   await redis.sadd('message:' + 'm6' + ':downvote', 'u1');
   await redis.hincrby('user:' + 'u3', 'score', -10);
-  await redis.zincrby('message:hot', -1, 'm6');
+  await redis.zincrby('message:top', -1, 'm6');
 
   await redis.sadd('message:' + 'm6' + ':downvote', 'u2');
   await redis.hincrby('user:' + 'u3', 'score', -10);
-  await redis.zincrby('message:hot', -1, 'm6');
+  await redis.zincrby('message:top', -1, 'm6');
 
   await redis.sadd('message:' + 'm6' + ':downvote', 'u3');
   await redis.hincrby('user:' + 'u3', 'score', -10);
-  await redis.zincrby('message:hot', -1, 'm6');
+  await redis.zincrby('message:top', -1, 'm6');
 
   //upvote reply
   await redis.sadd('reply:' + 'r2' + ':upvote', 'u1');
