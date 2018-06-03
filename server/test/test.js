@@ -1,6 +1,6 @@
 const assert = require('assert');
 const redis = require('../db');
-const seed = require('./seed');
+const seedModel = require('./seedModel');
 const {
   addNewUser,
   getUser,
@@ -34,7 +34,7 @@ const {
 
 describe('Database', () => {
   beforeEach(async () => {
-    await seed();
+    await seedModel();
   });
 
   describe('Db Connection', () => {
@@ -305,13 +305,13 @@ describe('Database', () => {
     it('should get newest messages posted');
 
     it(
-      'should get older messages from "new" feed when given a lastSeenMessageId'
+      'should get older messages from "new" feed when given a mostRecentMessageId'
     );
 
     it('should get top messages posted');
 
     it(
-      'should get lower-scored messages from "top" feed when given a lastSeenMessageId'
+      'should get lower-scored messages from "top" feed when given a mostRecentMessageId'
     );
   });
 });
