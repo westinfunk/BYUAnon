@@ -13,15 +13,7 @@ export default class Feed extends Component {
   }
 
   renderSeparator() {
-    return (
-      <View
-        style={{
-          backgroundColor: '#CED0CE'
-        }}
-      >
-        <View style={{ height: 2, backgroundColor: '#eeeeee', margin: 1 }} />
-      </View>
-    );
+    return <View style={{ height: 6 }} />;
   }
 
   render() {
@@ -39,6 +31,7 @@ export default class Feed extends Component {
               navigateToReplies={this.props.navigateToReplies}
             />
           )}
+          keyExtractor={(item) => item.id}
           ItemSeparatorComponent={this.renderSeparator}
         />
       );

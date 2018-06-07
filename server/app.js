@@ -8,7 +8,10 @@ const {
 const {
   handleRegisterUser,
   handleGetUserMessages,
-  handleGetUserReplies
+  handleGetUserReplies,
+  handleGetMessagesUserRepliedTo,
+  handleGetUserInfo,
+  handleGetUserScore
 } = require('./handlers/userHandler');
 const {
   handlePostMessage,
@@ -17,7 +20,8 @@ const {
   handleDeleteMessage
 } = require('./handlers/messageHandler');
 const {
-  handlePostReply,
+  handleGetMessageReplies,
+  handlePostReplyToMessage,
   handleDownvoteReply,
   handleUpvoteReply,
   handleDeleteReply
@@ -26,52 +30,34 @@ const {
 const app = express();
 app.use(bodyParser.json());
 
-app.get('/feed/new', async (req, res) => {
-  console.log('REQUEST', req);
-  // New Feed
-});
+app.get('/feed/new', handleGetNewFeed);
 
-app.get('/feed/top', async (req, res) => {
-  //
-  // Top Feed
-});
+app.get('/feed/top', handleGetTopFeed);
 
-app.post('/message', async (req, res) => {
-  //
-});
+app.post('/message', handlePostMessage);
 
-app.post('/message/:id/reply', async (req, res) => {
-  //
-});
+app.post('/message/:id/reply', handlePostReplyToMessage);
 
-app.post('/message/:id/upvote', async (req, res) => {
-  //req.query.messageId
-});
+app.get('/message/:id/reply', handleGetMessageReplies);
 
-app.post('/message/:id/downvote', async (req, res) => {
-  //req.query.messageId
-});
+app.post('/message/:id/upvote', handleUpvoteMessage);
+
+app.post('/message/:id/downvote', handleDownvoteMessage);
+
+app.delete('/message/:id', handleDeleteMessage);
+
+app.get('/user/score', handleGetUserScore);
 
 app.post('/user/register', handleRegisterUser);
 
-app.get('/user/:id/message', async (req, res) => {
-  //req.query.userId
-});
+app.get('/user/:id/message', handleGetUserMessages);
 
-app.get('/user/:id/reply', async (req, res) => {
-  //req.query.userId
-});
+app.get('/user/:id/reply', handleGetMessagesUserRepliedTo);
 
-app.get('/reply', async (req, res) => {
-  //req.query.messageId
-});
+app.post('reply/:id/downvote', handleDownvoteReply);
 
-app.post('reply/:id/downvote', async (req, res) => {
-  //req.query.replyId
-});
+app.post('reply/:id/upvote', handleUpvoteReply);
 
-app.post('reply/:id/upvote', async (req, res) => {
-  //req.query.replyId
-});
+app.delete('reply/:id', handleDeleteReply);
 
 module.exports = app;

@@ -1,6 +1,8 @@
 // import { AppRegistry } from 'react-native';
 // import App from './App';
 
+import { PRIMARY, WHITE, LIGHT_GRAY, DARK_GRAY } from './src/styles';
+
 // AppRegistry.registerComponent('BYUAnon', () => App);
 
 import { Navigation } from 'react-native-navigation';
@@ -13,17 +15,31 @@ Navigation.startTabBasedApp({
     {
       label: 'New',
       screen: 'NewMessages',
-      title: 'New'
+      title: 'BYU Anon',
+      icon: require('./assets/home.png')
     },
     {
       label: 'Top',
       screen: 'TopMessages',
-      title: 'Top'
+      title: 'Top',
+      icon: require('./assets/fire.png')
     },
     {
       label: 'Profile',
       screen: 'Profile',
-      title: 'Profile'
+      title: 'Profile',
+      icon: require('./assets/profile.png')
     }
-  ]
+  ],
+  tabsStyle: {
+    tabBarButtonColor: LIGHT_GRAY,
+    tabBarSelectedButtonColor: PRIMARY,
+    tabBarTextFontFamily: 'AvenirNext-Bold'
+  },
+  appStyle: {
+    navBarTextFontFamily: 'AvenirNext-DemiBold',
+    navBarTextColor: WHITE,
+    navBarBackgroundColor: PRIMARY,
+    navBarButtonColor: WHITE
+  }
 });

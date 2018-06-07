@@ -5,7 +5,13 @@ const {
   MAX_NUMBER_OF_ELEMENTS_TO_LOAD,
   getMessageOrReplyDataFromId,
   generateTimestamp,
-  generateId
+  generateId,
+  removeUpvoteFromMessageOrReply,
+  removeDownvoteFromMessageOrReply,
+  upvoteMessageOrReply,
+  downvoteMessageOrReply,
+  getAuthorIdFromMessageOrReply,
+  deleteMessageOrReply
 } = require('./modelUtils');
 
 /*
@@ -90,15 +96,11 @@ const getOlderMessageIds = async () => {
 
 const getTopMessageIds = async () => {
   try {
-    return await redis.zrange('message:top', 0, MAX_NUMBER_OF_ELEMENTS_TO_LOAD);
-  } catch (error) {
-    handleError(error);
-  }
-};
-
-const deleteMessage = async (messageId) => {
-  try {
-    return await redis.hset('message:' + messageId, 'deleted', 1);
+    return await redis.zrange(
+      'message:top',
+      0,
+      DEFAULT_NUMBER_OF_ELEMENTS_TO_LOAD
+    );
   } catch (error) {
     handleError(error);
   }
@@ -106,7 +108,7 @@ const deleteMessage = async (messageId) => {
 
 const upvoteMessage = async (messageId, userId) => {
   try {
-    return await redis.sadd('message:' + messageId + ':upvote', userId);
+    return await upvoteMessageOrReply(messageId, userId, 'message');
   } catch (error) {
     handleError(error);
   }
@@ -114,7 +116,7 @@ const upvoteMessage = async (messageId, userId) => {
 
 const downvoteMessage = async (messageId, userId) => {
   try {
-    return await redis.sadd('message:' + messageId + ':downvote', userId);
+    return await downvoteMessageOrReply(messageId, userId, 'message');
   } catch (error) {
     handleError(error);
   }
@@ -122,7 +124,7 @@ const downvoteMessage = async (messageId, userId) => {
 
 const removeUpvoteFromMessage = async (messageId, userId) => {
   try {
-    return await redis.srem('message:' + messageId, +':upvote', userId);
+    return await removeUpvoteFromMessageOrReply(messageId, userId, 'message');
   } catch (error) {
     handleError(error);
   }
@@ -130,7 +132,7 @@ const removeUpvoteFromMessage = async (messageId, userId) => {
 
 const removeDownvoteFromMessage = async (messageId, userId) => {
   try {
-    return await redis.srem('message:' + messageId + ':downvote', userId);
+    return await removeDownvoteFromMessageOrReply(messageId, userId, 'message');
   } catch (error) {
     handleError(error);
   }
@@ -148,6 +150,22 @@ const getMessageReplyIds = async (messageId) => {
   }
 };
 
+const getMessageAuthorId = async (messageId) => {
+  try {
+    return await getAuthorIdFromMessageOrReply(messageId, 'message');
+  } catch (error) {
+    handleError(error);
+  }
+};
+
+const deleteMessage = async (messageId) => {
+  try {
+    return await deleteMessageOrReply(messageId, 'message');
+  } catch (error) {
+    handleError(error);
+  }
+};
+
 module.exports = {
   postMessage,
   getMessageDataFromId,
@@ -157,6 +175,9 @@ module.exports = {
   downvoteMessage,
   removeUpvoteFromMessage,
   removeDownvoteFromMessage,
+  getMessageAuthorId,
   getMessageReplyIds,
-  getNewMessageIds
+  getNewMessageIds,
+  getTopMessageIds,
+  deleteMessage
 };

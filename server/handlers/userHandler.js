@@ -1,33 +1,78 @@
-const { encode, decode, fillZeros } = require('../utils');
-const client = require('../db');
+const {
+  addNewUser,
+  getUserMessageIds,
+  getIdsOfMessagesUserRepliedTo,
+  getUser,
+  getUserScore
+} = require('../models/userModel');
 
-const handleRegisterUser = async function(req, res) {
-  console.log('inside register user handler');
+const { getMessageDataFromIds } = require('../models/messageModel');
+
+const handleRegisterUser = async (req, res) => {
   try {
-    await client.incr('usernumber');
-    const userNumber = await client.get('usernumber');
-    const userId = 'U' + fillZeros(userNumber);
-    res.json({ token: userId });
+    console.log('registering a new user!');
+    const ip = req.ip;
+    const userId = await addNewUser(ip);
+    console.log('the user id given was', userId);
+    res.json(userId);
   } catch (error) {
-    console.log(error, new Date());
+    res
+      .status(500)
+      .json({ message: 'Server error when trying to register user' });
   }
 };
 
-// const handleGetUserMessages = async function(req, res) {
-//   const userId = decode(req.params.token);
-//   const
+const handleGetUserMessages = async (req, res) => {
+  try {
+    const userId = req.get('token');
+    const messageIds = await getUserMessageIds(userId);
+    const messages = await getMessageDataFromIds(messageIds);
+    return messages;
+  } catch (error) {
+    res
+      .status(500)
+      .json({ message: 'Server error when getting user messages' });
+  }
+};
+
+const handleGetMessagesUserRepliedTo = async (req, res) => {
+  try {
+    const userId = req.get('token');
+    const messageIds = await getIdsOfMessagesUserRepliedTo(userId);
+    const messages = await getMessageDataFromIds(messageIds);
+    return messages;
+  } catch (error) {
+    res
+      .status(500)
+      .json({ message: 'Server error when getting messages user replied to' });
+  }
+};
+
+// const handleGetUserInfo = async (req, res) => {
+//   try {
+//     const userId = req.get('token');
+//     const userData = await getUser(userId);
+//     const { score } = userData;
+//     res.json({ score });
+//   } catch (error) {
+//     res.status(500).json({ message: 'Server error getting that user' });
+//   }
 // };
 
-// const handleGetUserReplies = async function() {
-//   //
-// };
-
-// module.exports = {
-//   handleRegisterUser,
-//   handleGetUserMessages,
-//   handleGetUserReplies
-// };
+const handleGetUserScore = async (req, res) => {
+  try {
+    const userId = req.get('token');
+    console.log('look who it is its', userId);
+    const score = await getUserScore(userId);
+    res.json({ score });
+  } catch (error) {
+    res.status(500).json({ message: 'Server error getting user score' });
+  }
+};
 
 module.exports = {
-  handleRegisterUser
+  handleRegisterUser,
+  handleGetUserMessages,
+  handleGetMessagesUserRepliedTo,
+  handleGetUserScore
 };

@@ -16,7 +16,9 @@
     "nodejs-base64-encode": "0.0.2",
     "react": "16.3.1",
     "react-native": "0.55.4",
+    "react-native-elements": "^0.19.1",
     "react-native-navigation": "^1.1.462",
+    "react-native-vector-icons": "^4.6.0",
     "redis": "^2.8.0"
   },
   "devDependencies": {

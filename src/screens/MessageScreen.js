@@ -15,7 +15,6 @@ export default class Message extends Component {
       <View style={Styles.container}>
         <MessageView {...this.props} />
         <RepliesView messageId={this.props.id} />
-
         <Text>{JSON.stringify(this.props)}</Text>
       </View>
     );

@@ -4,6 +4,8 @@ const {
   REPLY_PREFIX,
   MAX_NUMBER_OF_ELEMENTS_TO_LOAD,
   getMessageOrReplyDataFromId,
+  getAuthorIdFromMessageOrReply,
+  deleteMessageOrReply,
   generateId,
   generateTimestamp,
   handleError
@@ -76,19 +78,17 @@ const postMessageReply = async (replyText, messageId, userId, ip) => {
   }
 };
 
-const addUpvoteToReply = async (replyId, userId) => {
+const upvoteReply = async (replyId, userId) => {
   try {
-    await redis.sadd('reply:' + replyId + ':upvote', userId);
-    return await removeUpvoteFromReply(userId);
+    return await upvoteMessageOrReply(replyId, userId, 'reply');
   } catch (error) {
     handleError(error);
   }
 };
 
-const addDownvoteToReply = async (replyId, userId) => {
+const downvoteReply = async (replyId, userId) => {
   try {
-    await redis.sadd('reply:' + replyId + ':downvote', userId);
-    return await removeUpvoteFromReply(replyId, userId);
+    return await downvoteMessageOrReply(replyId, userId, 'reply');
   } catch (error) {
     handleError(error);
   }
@@ -96,15 +96,7 @@ const addDownvoteToReply = async (replyId, userId) => {
 
 const removeUpvoteFromReply = async (replyId, userId) => {
   try {
-    const userHasUpvoted = await redis.sismember(
-      'reply:' + replyId + ':upvote',
-      userId
-    );
-    if (userHasUpvoted) {
-      return await redis.spop('reply:' + replyId + ':upvote', userId);
-    } else {
-      return 'OK';
-    }
+    return await removeUpvoteFromMessageOrReply(replyId, userId, 'reply');
   } catch (error) {
     handleError(error);
   }
@@ -112,15 +104,7 @@ const removeUpvoteFromReply = async (replyId, userId) => {
 
 const removeDownvoteFromReply = async (replyId, userId) => {
   try {
-    const userHasUpvoted = await redis.sismember(
-      'reply:' + replyId + ':downvote',
-      userId
-    );
-    if (userHasDownvoted) {
-      return await redis.spop('reply:' + replyId + ':downvote', userId);
-    } else {
-      return 'OK';
-    }
+    return await removeDownvoteFromMessageOrReply(replyId, userId, 'reply');
   } catch (error) {
     handleError(error);
   }
@@ -134,11 +118,31 @@ const getIdOfParentMessage = async (replyId) => {
   }
 };
 
+const getReplyAuthorId = async (replyId) => {
+  try {
+    return await getAuthorIdFromMessageOrReply(replyId, 'reply');
+  } catch (error) {
+    handleError(error);
+  }
+};
+
+const deleteReply = async (replyId) => {
+  try {
+    return await deleteMessageOrReply(replyId, 'reply');
+  } catch (error) {
+    handleError(error);
+  }
+};
+
 module.exports = {
   postMessageReply,
   getReplyDataFromId,
   getReplyDataFromIds,
   getIdOfParentMessage,
-  addDownvoteToReply,
-  addUpvoteToReply
+  upvoteReply,
+  downvoteReply,
+  removeUpvoteFromReply,
+  removeDownvoteFromReply,
+  getReplyAuthorId,
+  deleteReply
 };

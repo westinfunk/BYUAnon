@@ -57,22 +57,6 @@ const getUserMessageIds = async (userId) => {
   }
 };
 
-// const getUserMessages = async (userId, lastMessageId) => {
-//   //returns list of messages user posted
-//   try {
-//     const userMessageIds = await redis.lrange(
-//       `user:${userId}:message`,
-//       0,
-//       MAX_NUMBER_OF_ELEMENTS_TO_LOAD
-//     );
-//     return userMessageIds.map((messageId) =>
-//       getMessageOrReplyDataFromId(messageId, userId, 'message')
-//     );
-//   } catch (error) {
-//     handleError(error);
-//   }
-// };
-
 const getUserReplyIds = async (userId) => {
   try {
     const userReplyIds = await redis.lrange(
@@ -98,22 +82,6 @@ const getIdsOfMessagesUserRepliedTo = async (userId) => {
     handleError(error);
   }
 };
-
-// const getUserReplies = async (userId, lastMessageId) => {
-//   //returns list of messages user replied to
-//   try {
-//     const userMessageIds = await redis.lrange(
-//       `user:${userId}:message`,
-//       0,
-//       MAX_NUMBER_OF_ELEMENTS_TO_LOAD
-//     );
-//     const userMessages = userMessageIds.map((messageId) =>
-//       getMessageOrReplyDataFromId(messageId, userId, 'reply')
-//     );
-//   } catch (error) {
-//     handleError(error);
-//   }
-// };
 
 const getUserScore = async (userId) => {
   try {
@@ -147,6 +115,14 @@ const modifyUserScore = async (userId, amount) => {
     const firstScore = await redis.hget('user:' + userId, 'score');
     await redis.hincrby('user:' + userId, 'score', amount);
     const secondScore = await redis.hget('user:' + userId, 'score');
+    return await redis.hget('user:' + userId, 'score');
+  } catch (error) {
+    handleError(error);
+  }
+};
+
+const getUserSCore = async (userId) => {
+  try {
     return await redis.hget('user:' + userId, 'score');
   } catch (error) {
     handleError(error);
