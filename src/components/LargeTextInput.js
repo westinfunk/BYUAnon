@@ -52,7 +52,7 @@ export default class LargeTextInput extends Component {
           <TouchableOpacity onPress={this.props.onSubmit.bind(this)}>
             <Text style={Styles.buttonTitle}>
               {'Submit '}
-              <Icon name="send" type="font-awesome" size={15} color={PRIMARY} />
+              <Icon name="send" type="font-awesome" size={18} color={PRIMARY} />
             </Text>
           </TouchableOpacity>
         </View>
@@ -71,15 +71,15 @@ const Styles = StyleSheet.create({
     height: 240,
     color: DARK_GRAY,
     backgroundColor: '#FFF',
-    fontFamily: 'AvenirNext-Medium',
+    fontFamily: 'Nunito-SemiBold',
     fontSize: 22,
     padding: 20,
     paddingTop: 20
   },
   charactersRemainingText: {
     color: PRIMARY,
-    fontFamily: 'AvenirNext-Bold',
-    fontSize: 16
+    fontFamily: 'Nunito-ExtraBold',
+    fontSize: 18
   },
   information: {
     padding: 20,
@@ -95,7 +95,8 @@ const Styles = StyleSheet.create({
     paddingVertical: 6
   },
   buttonTitle: {
-    fontFamily: 'AvenirNext-Bold',
-    color: PRIMARY
+    fontFamily: 'Nunito-ExtraBold',
+    color: PRIMARY,
+    fontSize: 18
   }
 });

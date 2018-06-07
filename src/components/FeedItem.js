@@ -8,6 +8,7 @@ import ScoreBox from '../components/ScoreBox';
 import { PRIMARY, DARK_GRAY, LIGHT_GRAY, DROP_SHADOW } from '../styles';
 import TrashIcon from '../icons/TrashIcon';
 import TimestampDisplay from '../components/TimestampDisplay';
+import MessageScoreBox from '../components/MessageScoreBox';
 
 export default class FeedItem extends Component {
   constructor(props) {
@@ -79,9 +80,9 @@ const Styles = StyleSheet.create({
     flexDirection: 'row',
     backgroundColor: '#FFF',
     shadowColor: '#000',
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.3,
-    shadowRadius: 3
+    shadowOffset: { width: 0, height: 3 },
+    shadowOpacity: 0.5,
+    shadowRadius: 2
   },
   body: {
     flex: 1
@@ -108,20 +109,19 @@ const Styles = StyleSheet.create({
     alignItems: 'flex-end'
   },
   upvote: {},
-  score: {},
   downvote: {},
   scoreText: {
     fontSize: 20,
-    fontFamily: 'AvenirNext-Medium',
+    fontFamily: 'Nunito-SemiBold',
     color: PRIMARY
   },
   messageText: {
     fontSize: 18,
     color: DARK_GRAY,
-    fontFamily: 'AvenirNext-Medium'
+    fontFamily: 'Nunito-SemiBold'
   },
   replyText: {
-    fontFamily: 'AvenirNext-Bold',
+    fontFamily: 'Nunito-ExtraBold',
     color: LIGHT_GRAY,
     fontSize: 16
   }

@@ -34,10 +34,10 @@ Navigation.startTabBasedApp({
   tabsStyle: {
     tabBarButtonColor: LIGHT_GRAY,
     tabBarSelectedButtonColor: PRIMARY,
-    tabBarTextFontFamily: 'AvenirNext-Bold'
+    tabBarTextFontFamily: 'Nunito-ExtraBold'
   },
   appStyle: {
-    navBarTextFontFamily: 'AvenirNext-DemiBold',
+    navBarTextFontFamily: 'Nunito-ExtraBold',
     navBarTextColor: WHITE,
     navBarBackgroundColor: PRIMARY,
     navBarButtonColor: WHITE

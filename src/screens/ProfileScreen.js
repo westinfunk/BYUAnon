@@ -12,7 +12,7 @@ export default class ProfileScreen extends Component {
             key={i}
             title={item.title}
             leftIcon={item.icon}
-            titleStyle={{ fontFamily: 'AvenirNext-Medium', color: DARK_GRAY }}
+            titleStyle={{ fontFamily: 'Nunito-SemiBold', color: DARK_GRAY }}
             chevronColor={PRIMARY}
           />
         ))}

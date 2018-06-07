@@ -41,7 +41,7 @@ const Styles = StyleSheet.create({
     flex: 1
   },
   dateText: {
-    fontFamily: 'AvenirNext-Bold',
+    fontFamily: 'Nunito-ExtraBold',
     color: PRIMARY,
     fontSize: 16
   }

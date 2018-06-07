@@ -1,13 +1,30 @@
 import React, { Component } from 'react';
-import { Text, StyleSheet, View, TouchableHighlight } from 'react-native';
+import { View, StyleSheet } from 'react-native';
+import PropTypes from 'prop-types';
+
+import UpvoteSelectedIcon from '../icons/UpvoteSelectedIcon';
+import UpvoteUnselectedIcon from '../icons/UpvoteUnselectedIcon';
+import DownvoteSelectedIcon from '../icons/DownvoteSelectedIcon';
+import DownvoteUnselectedIcon from '../icons/DownvoteUnselectedIcon';
+import { PRIMARY } from '../styles';
+
+const propTypes = {
+  vote: PropTypes.string,
+  score: PropTypes.number.isRequired,
+  onUpvote: PropTypes.func.isRequired,
+  onDownvote: PropTypes.func.isRequired,
+  onRemoveUpvote: PropTypes.func.isRequired,
+  onRemoveDownvote: PropTypes.func.isRequired
+};
+
+const defaultProps = {
+  vote: null,
+  score: 0
+};
 
 export default class ScoreBox extends Component {
   constructor(props) {
     super(props);
-    this.state = {
-      vote: null,
-      score: 0
-    };
   }
 
   static getDerivedStateFromProps(nextProps, prevState) {
@@ -21,71 +38,33 @@ export default class ScoreBox extends Component {
     }
   }
 
-  upvote() {
-    //TODO: put http calls in here
-    this.setState(prevState => {
-      if (prevState.vote == 'up') {
-        return {
-          vote: null,
-          score: prevState.score - 1
-        };
-      } else if (prevState.vote == 'down') {
-        return {
-          vote: 'up',
-          score: prevState.score + 2
-        };
-      } else {
-        return {
-          vote: 'up',
-          score: prevState.score + 1
-        };
-      }
-    });
+  renderUpvoteIcon() {
+    if (this.state.vote == 'up') {
+      return <UpvoteSelectedIcon />;
+    } else {
+      return <UpvoteUnselectedIcon />;
+    }
   }
 
-  downvote() {
-    //TODO: put http calls in here
-    this.setState(prevState => {
-      if (prevState.vote == 'down') {
-        return {
-          vote: null,
-          score: prevState.score + 1
-        };
-      } else if (prevState.vote == 'up') {
-        return {
-          vote: 'down',
-          score: prevState.score - 2
-        };
-      } else {
-        return {
-          vote: 'down',
-          score: prevState.score - 1
-        };
-      }
-    });
+  renderDownvoteIcon() {
+    if (this.state.vote == 'down') {
+      return <DownvoteSelectedIcon />;
+    } else {
+      return <DownvoteUnselectedIcon />;
+    }
   }
 
   render() {
-    const upvoteButton = this.state.vote == 'up' ? '^^^^' : '^';
-    const downvoteButton = this.state.vote == 'down' ? 'vvvv' : 'v';
+    const upvoteIcon = this.renderUpvoteIcon();
+    const downvoteIcon = this.renderDownvoteIcon();
 
     return (
       <View style={Styles.container}>
-        <TouchableHighlight
-          style={Styles.upvote}
-          onPress={this.upvote.bind(this)}
-        >
-          <Text>{upvoteButton}</Text>
-        </TouchableHighlight>
+        <View style={Styles.upvote}>{upvoteIcon}</View>
         <View style={Styles.score}>
-          <Text>{this.state.score}</Text>
+          <Text style={Styles.scoreText}>{this.state.score}</Text>
         </View>
-        <TouchableHighlight
-          style={Styles.downvote}
-          onPress={this.downvote.bind(this)}
-        >
-          <Text>{downvoteButton}</Text>
-        </TouchableHighlight>
+        <View style={Styles.downvote}>{downvoteIcon}</View>
       </View>
     );
   }
@@ -93,17 +72,17 @@ export default class ScoreBox extends Component {
 
 const Styles = StyleSheet.create({
   container: {
-    justifyContent: 'center',
-    alignSelf: 'flex-end',
-    alignItems: 'center',
-    width: 60,
-    flex: 1,
-    backgroundColor: '#DDDDDD'
+    marginLeft: 15,
+    padding: 5,
+    justifyContent: 'space-evenly',
+    alignItems: 'center'
   },
-  upvote: {
-    backgroundColor: '#CCCCCC'
+  scoreText: {
+    fontSize: 20,
+    fontFamily: 'Nunito-SemiBold',
+    color: PRIMARY
   },
-  downvote: {
-    backgroundColor: '#EEEEEE'
-  }
+  score: {},
+  upvote: {},
+  downvote: {}
 });
