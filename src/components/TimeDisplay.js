@@ -6,7 +6,12 @@ import PropTypes from 'prop-types';
 
 const propTypes = {
   timestamp: PropTypes.oneOfType([PropTypes.string, PropTypes.number])
-    .isRequired
+    .isRequired,
+  size: PropTypes.number
+};
+
+const defaultProps = {
+  size: 15
 };
 
 const calculateTimeDisplay = (timestamp) => {
@@ -20,15 +25,15 @@ const calculateTimeDisplay = (timestamp) => {
   } else if (secondsDifference < 60 * 60 * 24) {
     return Math.floor(secondsDifference / 60 / 60) + 'h';
   } else {
-    return Math.floor(secondsDifference / 60 / 60 / 24) + 'd';
+    return Math.floor(secondsDifference / 60 / 60 / 24 / 1000) + 'd';
   }
 };
 
-const TimeDisplay = ({ timestamp }) => {
+const TimeDisplay = ({ timestamp, size }) => {
   const timeDisplay = calculateTimeDisplay(timestamp);
   return (
     <View style={Styles.date}>
-      <Text style={Styles.dateText}>
+      <Text style={[Styles.dateText, { fontSize: size }]}>
         <Icon name={'clock'} color={PRIMARY} />
         {' ' + timeDisplay}
       </Text>
@@ -41,12 +46,12 @@ const Styles = StyleSheet.create({
     flex: 1
   },
   dateText: {
-    fontFamily: 'Nunito-ExtraBold',
-    color: PRIMARY,
-    fontSize: 16
+    fontFamily: 'Nunito-Black',
+    color: PRIMARY
   }
 });
 
 TimeDisplay.propTypes = propTypes;
+TimeDisplay.defaultProps = defaultProps;
 
 export default TimeDisplay;

@@ -60,7 +60,7 @@ export default class NewMessages extends Component {
       this.props.navigator.push({
         screen: 'ComposeMessage',
         title: 'Compose',
-        backButtonTitle: 'Feed'
+        backButtonTitle: ''
       });
     }
   }
@@ -77,10 +77,7 @@ export default class NewMessages extends Component {
   render() {
     return (
       <View style={Styles.container}>
-        <Feed
-          messages={this.state.messages}
-          navigateToReplies={this.navigateToReplies.bind(this)}
-        />
+        <Feed navigator={this.props.navigator} messages={this.state.messages} />
       </View>
     );
   }

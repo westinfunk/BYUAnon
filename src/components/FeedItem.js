@@ -1,14 +1,23 @@
 import React, { Component } from 'react';
 import { Text, StyleSheet, View, TouchableHighlight } from 'react-native';
-import UpvoteSelectedIcon from '../icons/UpvoteSelectedIcon';
-import UpvoteUnselectedIcon from '../icons/UpvoteUnselectedIcon';
-import DownvoteSelectedIcon from '../icons/DownvoteSelectedIcon';
-import DownvoteUnselectedIcon from '../icons/DownvoteUnselectedIcon';
-import ScoreBox from '../components/ScoreBox';
+import MessageScoreBox from '../components/MessageScoreBox';
 import { PRIMARY, DARK_GRAY, LIGHT_GRAY, DROP_SHADOW } from '../styles';
 import TrashIcon from '../icons/TrashIcon';
-import TimestampDisplay from '../components/TimestampDisplay';
-import MessageScoreBox from '../components/MessageScoreBox';
+import DeleteButton from '../components/DeleteButton';
+import TimeDisplay from '../components/TimeDisplay';
+import PropTypes from 'prop-types';
+
+const propTypes = {
+  scorebox: PropTypes.element.isRequired,
+  timestamp: PropTypes.string.isRequired,
+  onDelete: PropTypes.func.isRequired,
+  text: PropTypes.string.isRequired,
+  vote: PropTypes.string.isRequired,
+  id: PropTypes.string.isRequired,
+  score: PropTypes.number.isRequired,
+  onNavigate: PropTypes.func,
+  replyCount: PropTypes.number
+};
 
 export default class FeedItem extends Component {
   constructor(props) {
@@ -16,16 +25,12 @@ export default class FeedItem extends Component {
   }
 
   renderReplyCount() {
-    const replyCount =
-      typeof this.props.replyCount == 'string'
-        ? parseInt(this.props.replyCount)
-        : this.props.replyCount;
+    const { replyCount } = this.props;
     return replyCount ? replyCount + ' replies' : '';
   }
 
   render() {
     const replyCount = this.renderReplyCount();
-    const trash = this.props.isAuthor ? 'not' : 'trash';
     const longText =
       ' Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla eu odio porttitor arcu bibendum sagittis et ac erat. Orci varius natoque penatibus et magnis dis parturient montes, nascetur rient montes';
     const mediumText =
@@ -40,33 +45,23 @@ export default class FeedItem extends Component {
     texts.push(shortText);
     texts.push(shortestText);
     return (
-      <View style={Styles.container}>
-        <View style={Styles.body}>
-          <View style={Styles.textArea}>
-            <Text style={Styles.messageText}>{texts[randNum]}</Text>
-          </View>
-          <View style={Styles.information}>
-            <TimestampDisplay timestamp={1528254558096} />
-            <View style={Styles.replyCount}>
-              <Text style={Styles.replyText}>3 replies</Text>
+      <TouchableHighlight onPress={this.props.onNavigate}>
+        <View style={Styles.container}>
+          <View style={Styles.body}>
+            <View style={Styles.textArea}>
+              <Text style={Styles.messageText}>{texts[randNum]}</Text>
             </View>
-            <View style={Styles.delete}>
-              <TrashIcon />
+            <View style={Styles.information}>
+              <TimeDisplay timestamp={this.props.timestamp} />
+              <View style={Styles.replyCount}>
+                <Text style={Styles.replyText}>3 replies</Text>
+              </View>
+              <DeleteButton display={true} onDelete={this.props.onDelete} />
             </View>
           </View>
+          <MessageScoreBox vote={'up'} score={4} messageId={'423798243'} />
         </View>
-        <View style={Styles.scoreArea}>
-          <View style={Styles.upvote}>
-            <UpvoteSelectedIcon />
-          </View>
-          <View style={Styles.score}>
-            <Text style={Styles.scoreText}>12</Text>
-          </View>
-          <View style={Styles.downvote}>
-            <DownvoteUnselectedIcon />
-          </View>
-        </View>
-      </View>
+      </TouchableHighlight>
     );
   }
 }
@@ -109,6 +104,7 @@ const Styles = StyleSheet.create({
     alignItems: 'flex-end'
   },
   upvote: {},
+  score: {},
   downvote: {},
   scoreText: {
     fontSize: 20,
@@ -121,8 +117,8 @@ const Styles = StyleSheet.create({
     fontFamily: 'Nunito-SemiBold'
   },
   replyText: {
-    fontFamily: 'Nunito-ExtraBold',
     color: LIGHT_GRAY,
-    fontSize: 16
+    fontFamily: 'Nunito-Black',
+    fontSize: 15
   }
 });

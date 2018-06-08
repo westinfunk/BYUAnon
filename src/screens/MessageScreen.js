@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { View, Text, TouchableHighlight, StyleSheet } from 'react-native';
-import MessageView from '../components/MessageView';
+import MessageDisplay from '../components/MessageDisplay';
+import ReplyFeed from '../components/ReplyFeed';
 
 export default class Message extends Component {
   constructor(props) {
@@ -11,11 +12,11 @@ export default class Message extends Component {
   }
 
   render() {
+    const messageId = this.props.id;
     return (
       <View style={Styles.container}>
-        <MessageView {...this.props} />
-        <RepliesView messageId={this.props.id} />
-        <Text>{JSON.stringify(this.props)}</Text>
+        <MessageDisplay {...this.props} />
+        <ReplyFeed messageId={messageId} />
       </View>
     );
   }
@@ -28,7 +29,7 @@ const Styles = StyleSheet.create({
 });
 
 const getReplies = async function() {
-  await setTimeout(1000);
+  await setTimeout(500);
   return [
     {
       id: '1243560',

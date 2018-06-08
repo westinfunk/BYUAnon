@@ -7,39 +7,45 @@ import { post } from '../Utils';
 const propTypes = {
   vote: PropTypes.string,
   score: PropTypes.number.isRequired,
-  messageId: PropTypes.string.isRequired
+  id: PropTypes.string.isRequired
 };
 
 export default class MessageScoreBox extends Component {
   constructor(props) {
     super(props);
+    this.upvoteMessage = this.upvoteMessage.bind(this);
+    this.downvoteMessage = this.downvoteMessage.bind(this);
+    this.removeUpvoteFromMessage = this.removeUpvoteFromMessage.bind(this);
+    this.removeDownvoteFromMessage = this.removeDownvoteFromMessage.bind(this);
   }
 
   upvoteMessage() {
-    alert('upvoting message', this.props.messageId);
+    //
   }
 
   downvoteMessage() {
-    alert('downvoting message', this.props.messageId);
+    //
   }
 
   removeUpvoteFromMessage() {
-    alert('removing upvote from message', this.props.messageId);
+    //
   }
 
   removeDownvoteFromMessage() {
-    alert('removing downvote from message', this.props.messageId);
+    //
   }
 
   render() {
     return (
       <ScoreBox
         {...this.props}
-        onUpvote={this.upvoteMessage}
-        onDownvote={this.downvoteMessage}
-        removeUpvoteFromMessage={this.removeUpvoteFromMessage}
-        removeDownvoteFromMessage={this.removeDownvoteFromMessage}
+        upvote={this.upvoteMessage}
+        downvote={this.downvoteMessage}
+        removeUpvote={this.removeUpvoteFromMessage}
+        removeDownvote={this.removeDownvoteFromMessage}
       />
     );
   }
 }
+
+MessageScoreBox.propTypes = propTypes;

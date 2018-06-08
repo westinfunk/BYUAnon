@@ -2,6 +2,13 @@ import React, { Component } from 'react';
 import { View, Text, StyleSheet, FlatList } from 'react-native';
 import PropTypes from 'prop-types';
 import FeedItem from './FeedItem';
+import MessageFeedItem from './MessageFeedItem';
+
+const propTypes = {
+  getNewItems: PropTypes.func.isRequired,
+  getOlderItems: PropTypes.func.isRequired,
+  item: PropTypes.element.isRequired
+};
 
 export default class Feed extends Component {
   constructor(props) {
@@ -26,10 +33,11 @@ export default class Feed extends Component {
         <FlatList
           data={this.props.messages}
           renderItem={({ item, index }) => (
-            <FeedItem
-              {...item}
-              navigateToReplies={this.props.navigateToReplies}
-            />
+            <MessageFeedItem {...item} navigator={this.props.navigator} />
+            // <FeedItem
+            //   {...item}
+            //   navigateToReplies={this.props.navigateToReplies}
+            // />
           )}
           keyExtractor={(item) => item.id}
           ItemSeparatorComponent={this.renderSeparator}

@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View, StyleSheet } from 'react-native';
+import { View, StyleSheet, Text, TouchableOpacity } from 'react-native';
 import PropTypes from 'prop-types';
 
 import UpvoteSelectedIcon from '../icons/UpvoteSelectedIcon';
@@ -10,21 +10,20 @@ import { PRIMARY } from '../styles';
 
 const propTypes = {
   vote: PropTypes.string,
-  score: PropTypes.number.isRequired,
-  onUpvote: PropTypes.func.isRequired,
-  onDownvote: PropTypes.func.isRequired,
-  onRemoveUpvote: PropTypes.func.isRequired,
-  onRemoveDownvote: PropTypes.func.isRequired
-};
-
-const defaultProps = {
-  vote: null,
-  score: 0
+  score: PropTypes.number,
+  upvote: PropTypes.func.isRequired,
+  downvote: PropTypes.func.isRequired,
+  removeUpvote: PropTypes.func.isRequired,
+  removeDownvote: PropTypes.func.isRequired
 };
 
 export default class ScoreBox extends Component {
   constructor(props) {
     super(props);
+    this.state = {
+      vote: null,
+      score: 0
+    };
   }
 
   static getDerivedStateFromProps(nextProps, prevState) {
@@ -38,33 +37,98 @@ export default class ScoreBox extends Component {
     }
   }
 
-  renderUpvoteIcon() {
+  handleUpvoteButtonPress() {
     if (this.state.vote == 'up') {
-      return <UpvoteSelectedIcon />;
+      this.setState((prevState) => {
+        return {
+          vote: null,
+          score: prevState.score - 1
+        };
+      });
+      this.props.removeUpvote();
+    } else if (this.state.vote == 'down') {
+      this.setState((prevState) => {
+        return {
+          vote: 'up',
+          score: prevState.score + 2
+        };
+      });
+      this.props.upvote();
     } else {
-      return <UpvoteUnselectedIcon />;
+      this.setState((prevState) => {
+        return {
+          vote: 'up',
+          score: prevState.score + 1
+        };
+      });
+      this.props.upvote();
     }
   }
 
-  renderDownvoteIcon() {
+  handleDownvoteButtonPress() {
     if (this.state.vote == 'down') {
-      return <DownvoteSelectedIcon />;
+      this.setState((prevState) => {
+        return {
+          vote: null,
+          score: prevState.score + 1
+        };
+      });
+      this.props.removeDownvote();
+    } else if (this.state.vote == 'up') {
+      this.setState((prevState) => {
+        return {
+          vote: 'down',
+          score: prevState.score - 2
+        };
+      });
+      this.props.downvote();
     } else {
-      return <DownvoteUnselectedIcon />;
+      this.setState((prevState) => {
+        return {
+          vote: 'down',
+          score: prevState.score - 1
+        };
+      });
+      this.props.downvote();
     }
+  }
+
+  renderUpvoteIcon() {
+    return this.state.vote == 'up' ? (
+      <UpvoteSelectedIcon />
+    ) : (
+      <UpvoteUnselectedIcon />
+    );
+  }
+
+  renderDownvoteIcon() {
+    return this.state.vote == 'down' ? (
+      <DownvoteSelectedIcon />
+    ) : (
+      <DownvoteUnselectedIcon />
+    );
   }
 
   render() {
     const upvoteIcon = this.renderUpvoteIcon();
     const downvoteIcon = this.renderDownvoteIcon();
+    const score = this.state.score;
 
     return (
       <View style={Styles.container}>
-        <View style={Styles.upvote}>{upvoteIcon}</View>
+        <TouchableOpacity
+          onPress={this.handleUpvoteButtonPress.bind(this)}
+          style={Styles.upvote}>
+          {upvoteIcon}
+        </TouchableOpacity>
         <View style={Styles.score}>
-          <Text style={Styles.scoreText}>{this.state.score}</Text>
+          <Text style={Styles.scoreText}>{score}</Text>
         </View>
-        <View style={Styles.downvote}>{downvoteIcon}</View>
+        <TouchableOpacity
+          onPress={this.handleDownvoteButtonPress.bind(this)}
+          style={Styles.downvote}>
+          {downvoteIcon}
+        </TouchableOpacity>
       </View>
     );
   }
@@ -72,7 +136,7 @@ export default class ScoreBox extends Component {
 
 const Styles = StyleSheet.create({
   container: {
-    marginLeft: 15,
+    marginLeft: 10,
     padding: 5,
     justifyContent: 'space-evenly',
     alignItems: 'center'
@@ -86,3 +150,5 @@ const Styles = StyleSheet.create({
   upvote: {},
   downvote: {}
 });
+
+ScoreBox.propTypes = propTypes;
