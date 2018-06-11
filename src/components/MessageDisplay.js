@@ -32,7 +32,8 @@ const Styles = StyleSheet.create({
     ...DROP_SHADOW
   },
   body: { flex: 1 },
-  textArea: { minHeight: 160 },
+  textArea: { minHeight: 80 },
+  // textArea: { minHeight: 160 },
   text: {
     color: DARK_GRAY,
     fontFamily: 'Nunito-SemiBold',

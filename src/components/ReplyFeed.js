@@ -9,6 +9,7 @@ import {
 import PropTypes from 'prop-types';
 import ReplyFeedItem from './ReplyFeedItem';
 import { get } from '../utils';
+import { PRIMARY } from '../styles';
 
 const propTypes = {
   messageId: PropTypes.string.isRequired
@@ -25,7 +26,9 @@ export default class ReplyFeed extends Component {
   }
 
   componentDidMount() {
-    this.getReplies();
+    if (this.props.replyCount) {
+      this.getReplies();
+    }
   }
 
   async getReplies() {
@@ -44,15 +47,31 @@ export default class ReplyFeed extends Component {
     }
   }
 
+  renderHeader() {
+    return (
+      <Text
+        style={{
+          color: PRIMARY,
+          padding: 15,
+          fontSize: 30,
+          marginTop: 15,
+          fontFamily: 'Nunito-ExtraBold'
+        }}>
+        Replies:
+      </Text>
+    );
+  }
+
   render() {
     const { replies, refreshing } = this.state;
     return (
       <FlatList
         data={replies}
-        renderItem={(reply) => <ReplyFeedItem reply={reply} />}
+        renderItem={(reply) => <ReplyFeedItem {...reply.item} />}
         refreshing={refreshing}
         onRefresh={this.getReplies.bind(this)}
         keyExtractor={(reply) => reply.id}
+        ListHeaderComponent={this.renderHeader}
       />
     );
   }

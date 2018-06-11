@@ -8,6 +8,28 @@ const {
   deleteReply
 } = require('../models/replyModel');
 
+const _parseVote = (reply) => {
+  if (reply.userUpvoted) {
+    return 'up';
+  } else if (reply.userDownvoted) {
+    return 'down';
+  } else {
+    return null;
+  }
+};
+const _createReplyObjectsFromReplyData = (replies, userId) => {
+  return replies.map((reply) => {
+    return {
+      id: reply.id,
+      score: reply.score,
+      timestamp: reply.timestamp,
+      text: reply.text,
+      vote: _parseVote(reply),
+      isAuthor: userId == reply.author
+    };
+  });
+};
+
 const handleGetMessageReplies = async (req, res) => {
   //TODO: format this reply object, don't just give raw data you retard
   try {
@@ -15,8 +37,10 @@ const handleGetMessageReplies = async (req, res) => {
     const userId = req.get('token');
     console.log('oh, trying to get the replies of message', messageId, userId);
     const replies = await getMessageReplies(messageId, userId);
+    const repliesResponse = _createReplyObjectsFromReplyData(replies, userId);
     console.log('replies are', replies);
-    res.json(replies);
+    console.log('reply data is', repliesResponse);
+    res.json(repliesResponse);
   } catch (error) {
     res.status(500).json({ message: 'Server error getting replies' });
   }

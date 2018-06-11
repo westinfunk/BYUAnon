@@ -17,7 +17,7 @@ export default class Message extends Component {
     return (
       <View style={Styles.container}>
         <MessageDisplay {...this.props} />
-        <ReplyFeed messageId={messageId} />
+        <ReplyFeed replyCount={this.props.replyCount} messageId={messageId} />
       </View>
     );
   }
