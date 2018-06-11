@@ -78,18 +78,12 @@ export const post = async function(route, requestBody) {
 
 export const registerDevice = async function() {
   try {
-    console.log('register device');
     const deviceToken = await AsyncStorage.getItem('token');
-    console.log('device token is', deviceToken);
     if (!deviceToken) {
-      console.log('device not registered yet');
       const newToken = await post('/user/register');
-      console.log('the new token is', newToken);
       await AsyncStorage.setItem('token', newToken);
-    } else {
-      console.log('device was already registered with token', deviceToken);
     }
   } catch (e) {
-    console.log('Error::::', e);
+    console.log('Error registering device', e);
   }
 };

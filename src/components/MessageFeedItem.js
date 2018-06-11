@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import FeedItem from './FeedItem';
 import MessageScoreBox from './MessageScoreBox';
-import { fetchDelete } from '../Utils';
+import { fetchDelete } from '../utils';
 import PropTypes from 'prop-types';
 
 const propTypes = {
@@ -15,6 +15,7 @@ export default class MessageFeedItem extends Component {
 
   navigateToMessage() {
     const { navigator, ...messageProps } = this.props;
+    console.log('NAVIGATING! the message props are', messageProps);
     this.props.navigator.push({
       screen: 'Message',
       title: 'Details',

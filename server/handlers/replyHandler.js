@@ -12,7 +12,9 @@ const handleGetMessageReplies = async (req, res) => {
   try {
     const messageId = req.params.id;
     const userId = req.get('token');
+    console.log('oh, trying to get the replies of message', messageId, userId);
     const replies = await getMessageReplies(messageId, userId);
+    console.log('replies are', replies);
     res.json(replies);
   } catch (error) {
     res.status(500).json({ message: 'Server error getting replies' });

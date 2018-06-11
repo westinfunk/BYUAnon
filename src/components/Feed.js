@@ -34,10 +34,6 @@ export default class Feed extends Component {
           data={this.props.messages}
           renderItem={({ item, index }) => (
             <MessageFeedItem {...item} navigator={this.props.navigator} />
-            // <FeedItem
-            //   {...item}
-            //   navigateToReplies={this.props.navigateToReplies}
-            // />
           )}
           keyExtractor={(item) => item.id}
           ItemSeparatorComponent={this.renderSeparator}

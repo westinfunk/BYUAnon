@@ -8,10 +8,16 @@ export default class MessageFeedItem extends Component {
   }
 
   deleteMessage() {
-    //
+    alert('tryina delete reply');
   }
 
   render() {
-    return <FeedItem scorebox={ReplyScoreBox} onDelete={this.deleteMessage} />;
+    return (
+      <FeedItem
+        {...this.props}
+        ScoreBox={ReplyScoreBox}
+        onDelete={this.deleteMessage}
+      />
+    );
   }
 }

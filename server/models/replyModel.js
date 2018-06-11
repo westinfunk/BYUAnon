@@ -49,8 +49,10 @@ const getMessageReplies = async (messageId, userId) => {
       0,
       MAX_NUMBER_OF_ELEMENTS_TO_LOAD
     );
-    return await replyIds.map((replyId) =>
-      getMessageOrReplyDataFromId(replyId, userId, 'reply')
+    return await Promise.all(
+      replyIds.map((replyId) =>
+        getMessageOrReplyDataFromId(replyId, userId, 'reply')
+      )
     );
   } catch (error) {
     handleError(error);
@@ -136,6 +138,7 @@ const deleteReply = async (replyId) => {
 
 module.exports = {
   postMessageReply,
+  getMessageReplies,
   getReplyDataFromId,
   getReplyDataFromIds,
   getIdOfParentMessage,

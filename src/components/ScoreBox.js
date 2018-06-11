@@ -1,5 +1,11 @@
 import React, { Component } from 'react';
-import { View, StyleSheet, Text, TouchableOpacity } from 'react-native';
+import {
+  View,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  TouchableWithoutFeedback
+} from 'react-native';
 import PropTypes from 'prop-types';
 
 import UpvoteSelectedIcon from '../icons/UpvoteSelectedIcon';
@@ -15,6 +21,11 @@ const propTypes = {
   downvote: PropTypes.func.isRequired,
   removeUpvote: PropTypes.func.isRequired,
   removeDownvote: PropTypes.func.isRequired
+};
+
+const defaultProps = {
+  vote: null,
+  score: 0
 };
 
 export default class ScoreBox extends Component {
@@ -116,18 +127,18 @@ export default class ScoreBox extends Component {
 
     return (
       <View style={Styles.container}>
-        <TouchableOpacity
-          onPress={this.handleUpvoteButtonPress.bind(this)}
-          style={Styles.upvote}>
-          {upvoteIcon}
+        <TouchableOpacity onPress={this.handleUpvoteButtonPress.bind(this)}>
+          <View style={Styles.upvote}>{upvoteIcon}</View>
         </TouchableOpacity>
-        <View style={Styles.score}>
-          <Text style={Styles.scoreText}>{score}</Text>
-        </View>
+        <TouchableWithoutFeedback>
+          <View style={Styles.score}>
+            <Text style={Styles.scoreText}>{score}</Text>
+          </View>
+        </TouchableWithoutFeedback>
         <TouchableOpacity
           onPress={this.handleDownvoteButtonPress.bind(this)}
           style={Styles.downvote}>
-          {downvoteIcon}
+          <View style={Styles.downvote}>{downvoteIcon}</View>
         </TouchableOpacity>
       </View>
     );
@@ -152,3 +163,4 @@ const Styles = StyleSheet.create({
 });
 
 ScoreBox.propTypes = propTypes;
+ScoreBox.defaultProps = propTypes;

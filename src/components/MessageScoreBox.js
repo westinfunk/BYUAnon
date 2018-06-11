@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { View, StyleSheet } from 'react-native';
 import PropTypes from 'prop-types';
 import ScoreBox from './ScoreBox';
-import { post } from '../Utils';
+import { post } from '../utils';
 
 const propTypes = {
   vote: PropTypes.string,

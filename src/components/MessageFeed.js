@@ -1,11 +1,58 @@
 import React, { Component } from 'react';
-import Feed from './Feed';
+import { FlatList } from 'react-native';
 import MessageFeedItem from './MessageFeedItem';
+import ListSeparator from '../components/ListSeparator';
+import PropTypes from 'prop-types';
+
+const propTypes = {
+  getMessages: PropTypes.func.isRequired,
+  getOlderMessages: PropTypes.func.isRequired,
+  navigator: PropTypes.object.isRequired
+};
 
 export default class MessageFeed extends Component {
-  //re-do this. Do not inherit from feed, make your own feed separate from reply feed in here
+  constructor(props) {
+    super(props);
+    this.state = {
+      refreshing: false,
+      messages: [],
+      errorMessage: ''
+    };
+  }
+
+  componentDidMount() {
+    this.handleLoadMessages();
+  }
+
+  async handleLoadMessages() {
+    try {
+      this.setState({ refreshing: true });
+      const messages = await this.props.getMessages();
+      this.setState({ refreshing: false, messages });
+    } catch (error) {
+      this.setState({
+        refreshing: false,
+        errorMessage: 'There was a problem retrieving posts'
+      });
+    }
+  }
 
   render() {
-    <Feed {...this.props} item={MessageFeedItem} />;
+    const { messages, refreshing } = this.state;
+    const { getMessages, getOlderMessages, navigator } = this.props;
+    return (
+      <FlatList
+        data={messages}
+        renderItem={(message) => (
+          <MessageFeedItem {...message.item} navigator={navigator} />
+        )}
+        keyExtractor={(message) => message.id}
+        ItemSeparatorComponent={ListSeparator}
+        refreshing={refreshing}
+        onRefresh={this.handleLoadMessages.bind(this)}
+      />
+    );
   }
 }
+
+MessageFeed.propTypes = propTypes;

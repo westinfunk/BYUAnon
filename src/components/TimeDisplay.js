@@ -11,13 +11,14 @@ const propTypes = {
 };
 
 const defaultProps = {
-  size: 15
+  size: 14
 };
 
 const calculateTimeDisplay = (timestamp) => {
   const now = Date.now();
   const then = parseInt(timestamp);
   const secondsDifference = (now - then) / 1000;
+  if (isNaN(secondsDifference)) return '';
   if (secondsDifference < 60) {
     return Math.floor(secondsDifference) + 's';
   } else if (secondsDifference < 60 * 60) {

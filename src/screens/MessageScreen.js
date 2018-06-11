@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { View, Text, TouchableHighlight, StyleSheet } from 'react-native';
 import MessageDisplay from '../components/MessageDisplay';
 import ReplyFeed from '../components/ReplyFeed';
+import { BACKGROUND_GRAY } from '../styles';
 
 export default class Message extends Component {
   constructor(props) {
@@ -24,7 +25,8 @@ export default class Message extends Component {
 
 const Styles = StyleSheet.create({
   container: {
-    flex: 1
+    flex: 1,
+    backgroundColor: BACKGROUND_GRAY
   }
 });
 

@@ -1,8 +1,12 @@
 import React, { Component } from 'react';
-import { Text, StyleSheet, View, TouchableHighlight } from 'react-native';
-import MessageScoreBox from '../components/MessageScoreBox';
+import {
+  Text,
+  StyleSheet,
+  View,
+  TouchableHighlight,
+  TouchableWithoutFeedback
+} from 'react-native';
 import { PRIMARY, DARK_GRAY, LIGHT_GRAY, DROP_SHADOW } from '../styles';
-import TrashIcon from '../icons/TrashIcon';
 import DeleteButton from '../components/DeleteButton';
 import TimeDisplay from '../components/TimeDisplay';
 import PropTypes from 'prop-types';
@@ -20,8 +24,8 @@ const propTypes = {
 };
 
 export default class FeedItem extends Component {
-  constructor(props) {
-    super(props);
+  componentDidMount() {
+    console.log('THIS FEED ITEM MOUNTED', this.props);
   }
 
   renderReplyCount() {
@@ -30,7 +34,16 @@ export default class FeedItem extends Component {
   }
 
   render() {
-    const replyCount = this.renderReplyCount();
+    const {
+      ScoreBox,
+      timestamp,
+      onNavigate,
+      onDelete,
+      isAuthor,
+      vote,
+      score,
+      id
+    } = this.props;
     const longText =
       ' Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla eu odio porttitor arcu bibendum sagittis et ac erat. Orci varius natoque penatibus et magnis dis parturient montes, nascetur rient montes';
     const mediumText =
@@ -45,21 +58,21 @@ export default class FeedItem extends Component {
     texts.push(shortText);
     texts.push(shortestText);
     return (
-      <TouchableHighlight onPress={this.props.onNavigate}>
+      <TouchableHighlight onPress={onNavigate}>
         <View style={Styles.container}>
           <View style={Styles.body}>
             <View style={Styles.textArea}>
               <Text style={Styles.messageText}>{texts[randNum]}</Text>
             </View>
             <View style={Styles.information}>
-              <TimeDisplay timestamp={this.props.timestamp} />
+              <TimeDisplay timestamp={timestamp} />
               <View style={Styles.replyCount}>
-                <Text style={Styles.replyText}>3 replies</Text>
+                <Text style={Styles.replyText}>{this.renderReplyCount()}</Text>
               </View>
-              <DeleteButton display={true} onDelete={this.props.onDelete} />
+              <DeleteButton display={isAuthor} onDelete={onDelete} />
             </View>
           </View>
-          <MessageScoreBox vote={'up'} score={4} messageId={'423798243'} />
+          <ScoreBox vote={vote} score={score} id={id} />
         </View>
       </TouchableHighlight>
     );
@@ -82,12 +95,7 @@ const Styles = StyleSheet.create({
   body: {
     flex: 1
   },
-  scoreArea: {
-    marginLeft: 15,
-    padding: 5,
-    justifyContent: 'space-evenly',
-    alignItems: 'center'
-  },
+
   textArea: {
     flex: 1
   },
@@ -103,16 +111,8 @@ const Styles = StyleSheet.create({
     flex: 1,
     alignItems: 'flex-end'
   },
-  upvote: {},
-  score: {},
-  downvote: {},
-  scoreText: {
-    fontSize: 20,
-    fontFamily: 'Nunito-SemiBold',
-    color: PRIMARY
-  },
   messageText: {
-    fontSize: 18,
+    fontSize: 17,
     color: DARK_GRAY,
     fontFamily: 'Nunito-SemiBold'
   },
