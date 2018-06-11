@@ -9,6 +9,7 @@ const {
 } = require('../models/replyModel');
 
 const handleGetMessageReplies = async (req, res) => {
+  //TODO: format this reply object, don't just give raw data you retard
   try {
     const messageId = req.params.id;
     const userId = req.get('token');

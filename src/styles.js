@@ -7,6 +7,6 @@ export const BACKGROUND_GRAY = '#EAEAEA';
 export const DROP_SHADOW = {
   shadowColor: '#000',
   shadowOffset: { width: 0, height: 2 },
-  shadowOpacity: 0.8,
+  shadowOpacity: 0.6,
   shadowRadius: 5
 };

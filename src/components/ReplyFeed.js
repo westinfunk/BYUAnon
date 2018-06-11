@@ -6,9 +6,9 @@ import {
   StyleSheet,
   FlatList
 } from 'react-native';
+import PropTypes from 'prop-types';
 import ReplyFeedItem from './ReplyFeedItem';
 import { get } from '../utils';
-import PropTypes from 'prop-types';
 
 const propTypes = {
   messageId: PropTypes.string.isRequired
@@ -45,12 +45,14 @@ export default class ReplyFeed extends Component {
   }
 
   render() {
+    const { replies, refreshing } = this.state;
     return (
       <FlatList
-        data={this.state.replies}
-        renderItem={({ reply, index }) => <ReplyFeedItem {...reply} />}
-        refreshing={this.state.refreshing}
+        data={replies}
+        renderItem={(reply) => <ReplyFeedItem reply={reply} />}
+        refreshing={refreshing}
         onRefresh={this.getReplies.bind(this)}
+        keyExtractor={(reply) => reply.id}
       />
     );
   }

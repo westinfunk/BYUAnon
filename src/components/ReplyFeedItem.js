@@ -7,6 +7,10 @@ export default class MessageFeedItem extends Component {
     super(props);
   }
 
+  componentDidMount() {
+    console.log('reply mounted, props are', this.props);
+  }
+
   deleteMessage() {
     alert('tryina delete reply');
   }
