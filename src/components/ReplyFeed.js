@@ -10,6 +10,7 @@ import PropTypes from 'prop-types';
 import ReplyFeedItem from './ReplyFeedItem';
 import { get } from '../utils';
 import { PRIMARY } from '../styles';
+import ListSeparator from './ListSeparator';
 
 const propTypes = {
   messageId: PropTypes.string.isRequired
@@ -36,14 +37,35 @@ export default class ReplyFeed extends Component {
     try {
       this.setState({ refreshing: true });
       const replies = await get(`/message/${messageId}/reply`);
-      console.log('replies are', replies);
-      this.setState({ replies, refreshing: false });
+      this.setState({ replies, refreshing: false, errorMessage: '' });
     } catch (error) {
-      console.log('error gettings replies', error);
       this.setState({
         refreshing: false,
         errorMessage: 'There was an error loading message replies'
       });
+    }
+  }
+
+  renderItem(reply, index) {
+    if (index == 0) {
+      return (
+        <View style={{ backgroundColor: '#fff' }}>
+          {' '}
+          <Text
+            style={{
+              color: PRIMARY,
+              padding: 15,
+              fontSize: 24,
+              marginTop: 15,
+              fontFamily: 'Nunito-ExtraBold'
+            }}>
+            Replies:
+          </Text>
+          <ReplyFeedItem {...reply.item} />
+        </View>
+      );
+    } else {
+      return <ReplyFeedItem {...reply.item} />;
     }
   }
 
@@ -52,8 +74,8 @@ export default class ReplyFeed extends Component {
       <Text
         style={{
           color: PRIMARY,
-          padding: 15,
-          fontSize: 30,
+          padding: 8,
+          fontSize: 24,
           marginTop: 15,
           fontFamily: 'Nunito-ExtraBold'
         }}>
@@ -67,11 +89,12 @@ export default class ReplyFeed extends Component {
     return (
       <FlatList
         data={replies}
-        renderItem={(reply) => <ReplyFeedItem {...reply.item} />}
+        renderItem={this.renderItem}
         refreshing={refreshing}
         onRefresh={this.getReplies.bind(this)}
         keyExtractor={(reply) => reply.id}
-        ListHeaderComponent={this.renderHeader}
+        ItemSeparatorComponent={ListSeparator}
+        // ListHeaderComponent={this.renderHeader}
       />
     );
   }

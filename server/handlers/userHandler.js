@@ -64,7 +64,8 @@ const handleGetUserScore = async (req, res) => {
     const userId = req.get('token');
     console.log('look who it is its', userId);
     const score = await getUserScore(userId);
-    res.json({ score });
+    console.log('score is ', score);
+    res.send(JSON.stringify(score));
   } catch (error) {
     res.status(500).json({ message: 'Server error getting user score' });
   }

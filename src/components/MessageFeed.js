@@ -27,8 +27,10 @@ export default class MessageFeed extends Component {
   async handleLoadMessages() {
     try {
       this.setState({ refreshing: true });
-      const messages = await this.props.getMessages();
-      this.setState({ refreshing: false, messages });
+      const messages = this.props.parent
+        ? await this.props.getMessages.call(this.props.parent)
+        : await this.props.getMessages();
+      this.setState({ refreshing: false, errorMessage: '', messages });
     } catch (error) {
       this.setState({
         refreshing: false,

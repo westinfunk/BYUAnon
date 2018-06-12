@@ -87,3 +87,20 @@ export const registerDevice = async function() {
     console.log('Error registering device', e);
   }
 };
+
+export const updateUserScore = async function() {
+  try {
+    const score = JSON.parse(await get('/user/score'));
+    if (score) {
+      this.props.navigator.setButtons({
+        leftButtons: [
+          {
+            title: '' + score
+          }
+        ]
+      });
+    }
+  } catch (error) {
+    console.log(error);
+  }
+};

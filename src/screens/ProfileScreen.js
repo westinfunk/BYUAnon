@@ -10,6 +10,14 @@ import {
 } from '../styles';
 
 export default class ProfileScreen extends Component {
+  navigateToScreen(screen, title) {
+    this.props.navigator.push({
+      screen,
+      title,
+      backButtonTitle: ''
+    });
+  }
+
   render() {
     return (
       <View style={Styles.container}>
@@ -22,6 +30,7 @@ export default class ProfileScreen extends Component {
               titleStyle={{ fontFamily: 'Nunito-SemiBold', color: DARK_GRAY }}
               chevronColor={PRIMARY}
               containerStyle={{ backgroundColor: '#FFF' }}
+              onPress={() => this.navigateToScreen(item.screen, item.title)}
             />
           ))}
         </View>
@@ -32,12 +41,14 @@ export default class ProfileScreen extends Component {
 
 const list = [
   {
-    title: 'My posts',
-    icon: { name: 'message-square', type: 'feather' }
+    title: 'My Posts',
+    icon: { name: 'message-square', type: 'feather' },
+    screen: 'UserMessages'
   },
   {
-    title: "Posts I've replied to",
-    icon: { name: 'users', type: 'feather' }
+    title: "Posts I've Replied To",
+    icon: { name: 'users', type: 'feather' },
+    screen: 'UserReplies'
   }
 ];
 
