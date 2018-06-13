@@ -7,7 +7,7 @@ import {
   View
 } from 'react-native';
 import { PRIMARY, DROP_SHADOW, DARK_GRAY } from '../styles';
-import { Icon, Button } from 'react-native-elements';
+import { Icon } from 'react-native-elements';
 import Separator from '../components/Separator';
 import PropTypes from 'prop-types';
 

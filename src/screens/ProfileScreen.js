@@ -8,8 +8,13 @@ import {
   BACKGROUND_GRAY,
   DROP_SHADOW
 } from '../styles';
+import { updateUserScore } from '../utils';
 
 export default class ProfileScreen extends Component {
+  componentDidMount() {
+    updateUserScore.call(this);
+  }
+
   navigateToScreen(screen, title) {
     this.props.navigator.push({
       screen,

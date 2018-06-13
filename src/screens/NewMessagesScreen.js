@@ -1,16 +1,15 @@
 import React, { Component } from 'react';
-import { View, Text, TouchableHighlight, StyleSheet } from 'react-native';
-import Feed from '../components/Feed';
-import { registerDevice, get, getUserScore, updateUserScore } from '../utils';
-import { PRIMARY, BACKGROUND_GRAY } from '../styles';
+import { View, StyleSheet } from 'react-native';
 import MessageFeed from '../components/MessageFeed';
+import { registerDevice, get, updateUserScore } from '../utils';
+import { BACKGROUND_GRAY } from '../styles';
 
 export default class NewMessages extends Component {
   static navigatorButtons = {
     rightButtons: [
       {
         id: 'compose',
-        //icon: require('../../assets/compose.png'),
+
         systemItem: 'compose'
       }
     ]
@@ -23,7 +22,6 @@ export default class NewMessages extends Component {
 
   componentDidMount() {
     registerDevice();
-    //updateUserScore.call(this);
   }
 
   onNavigatorEvent(event) {
@@ -46,10 +44,9 @@ export default class NewMessages extends Component {
     return (
       <View style={Styles.container}>
         <MessageFeed
-          getMessages={this.getMessages}
+          getMessages={this.getMessages.bind(this)}
           getOlderMessages={() => alert('getting older messages')}
           navigator={navigator}
-          parent={this}
         />
       </View>
     );

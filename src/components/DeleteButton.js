@@ -4,7 +4,7 @@ import TrashIcon from '../icons/TrashIcon';
 import PropTypes from 'prop-types';
 
 const propTypes = {
-  dislpay: PropTypes.bool.isRequired,
+  display: PropTypes.bool.isRequired,
   onDelete: PropTypes.func.isRequired
 };
 

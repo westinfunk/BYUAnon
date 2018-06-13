@@ -1,12 +1,6 @@
 import React, { Component } from 'react';
-import {
-  Text,
-  StyleSheet,
-  View,
-  TouchableHighlight,
-  TouchableWithoutFeedback
-} from 'react-native';
-import { PRIMARY, DARK_GRAY, LIGHT_GRAY, DROP_SHADOW } from '../styles';
+import { Text, StyleSheet, View, TouchableHighlight } from 'react-native';
+import { DARK_GRAY, LIGHT_GRAY } from '../styles';
 import DeleteButton from '../components/DeleteButton';
 import TimeDisplay from '../components/TimeDisplay';
 import PropTypes from 'prop-types';
@@ -35,6 +29,7 @@ export default class FeedItem extends Component {
 
   render() {
     const {
+      text,
       ScoreBox,
       timestamp,
       onNavigate,
@@ -62,7 +57,7 @@ export default class FeedItem extends Component {
         <View style={Styles.container}>
           <View style={Styles.body}>
             <View style={Styles.textArea}>
-              <Text style={Styles.messageText}>{texts[randNum]}</Text>
+              <Text style={Styles.messageText}>{text}</Text>
             </View>
             <View style={Styles.information}>
               <TimeDisplay timestamp={timestamp} />
@@ -82,8 +77,8 @@ export default class FeedItem extends Component {
 const Styles = StyleSheet.create({
   container: {
     flex: 1,
-    paddingVertical: 10,
-    paddingHorizontal: 15,
+    paddingVertical: 15,
+    paddingHorizontal: 20,
     minHeight: 100,
     flexDirection: 'row',
     backgroundColor: '#FFF',

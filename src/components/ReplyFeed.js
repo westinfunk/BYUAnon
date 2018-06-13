@@ -1,16 +1,12 @@
 import React, { Component } from 'react';
-import {
-  View,
-  Text,
-  TouchableHighlight,
-  StyleSheet,
-  FlatList
-} from 'react-native';
+import { View, Text, StyleSheet, FlatList } from 'react-native';
 import PropTypes from 'prop-types';
 import ReplyFeedItem from './ReplyFeedItem';
 import { get } from '../utils';
 import { PRIMARY } from '../styles';
 import ListSeparator from './ListSeparator';
+import MessageDisplay from './MessageDisplay';
+import Separator from './Separator';
 
 const propTypes = {
   messageId: PropTypes.string.isRequired
@@ -46,21 +42,29 @@ export default class ReplyFeed extends Component {
     }
   }
 
-  renderItem(reply, index) {
-    if (index == 0) {
+  renderHeadMessage() {
+    return <MessageDisplay {...this.props} />;
+  }
+
+  renderSeparator() {
+    return <Separator height={3} width={'95%'} align={'right'} />;
+  }
+
+  renderItem(reply) {
+    if (reply.index == 0) {
       return (
-        <View style={{ backgroundColor: '#fff' }}>
-          {' '}
+        <View style={{ backgroundColor: '#fff', marginTop: 18 }}>
           <Text
             style={{
               color: PRIMARY,
-              padding: 15,
+              paddingHorizontal: 15,
+              paddingVertical: 10,
               fontSize: 24,
-              marginTop: 15,
               fontFamily: 'Nunito-ExtraBold'
             }}>
             Replies:
           </Text>
+          {this.renderSeparator()}
           <ReplyFeedItem {...reply.item} />
         </View>
       );
@@ -69,32 +73,17 @@ export default class ReplyFeed extends Component {
     }
   }
 
-  renderHeader() {
-    return (
-      <Text
-        style={{
-          color: PRIMARY,
-          padding: 8,
-          fontSize: 24,
-          marginTop: 15,
-          fontFamily: 'Nunito-ExtraBold'
-        }}>
-        Replies:
-      </Text>
-    );
-  }
-
   render() {
     const { replies, refreshing } = this.state;
     return (
       <FlatList
         data={replies}
-        renderItem={this.renderItem}
+        renderItem={this.renderItem.bind(this)}
         refreshing={refreshing}
         onRefresh={this.getReplies.bind(this)}
         keyExtractor={(reply) => reply.id}
-        ItemSeparatorComponent={ListSeparator}
-        // ListHeaderComponent={this.renderHeader}
+        ItemSeparatorComponent={this.renderSeparator}
+        ListHeaderComponent={this.renderHeadMessage.bind(this)}
       />
     );
   }

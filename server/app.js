@@ -50,9 +50,9 @@ app.get('/user/score', handleGetUserScore);
 
 app.post('/user/register', handleRegisterUser);
 
-app.get('/user/:id/message', handleGetUserMessages);
+app.get('/user/message', handleGetUserMessages);
 
-app.get('/user/:id/reply', handleGetMessagesUserRepliedTo);
+app.get('/user/reply', handleGetMessagesUserRepliedTo);
 
 app.post('reply/:id/downvote', handleDownvoteReply);
 

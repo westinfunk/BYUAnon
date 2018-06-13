@@ -10,7 +10,6 @@ export default class UserMessages extends Component {
     rightButtons: [
       {
         id: 'compose',
-        //icon: require('../../assets/compose.png'),
         systemItem: 'compose'
       }
     ]
@@ -23,7 +22,6 @@ export default class UserMessages extends Component {
 
   componentDidMount() {
     registerDevice();
-    //updateUserScore.bind(this)();
   }
 
   onNavigatorEvent(event) {
@@ -37,7 +35,9 @@ export default class UserMessages extends Component {
   }
 
   async getMessages() {
-    return await get('/feed/new');
+    const messages = await get('/user/message');
+    console.log('the gotten messages are', messages);
+    return messages;
   }
 
   render() {

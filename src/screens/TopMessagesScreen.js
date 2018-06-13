@@ -10,7 +10,7 @@ export default class TopMessages extends Component {
     rightButtons: [
       {
         id: 'compose',
-        //icon: require('../../assets/compose.png'),
+
         systemItem: 'compose'
       }
     ]
@@ -44,10 +44,9 @@ export default class TopMessages extends Component {
     return (
       <View style={Styles.container}>
         <MessageFeed
-          getMessages={this.getMessages}
+          getMessages={this.getMessages.bind(this)}
           getOlderMessages={() => alert('getting older messages')}
           navigator={navigator}
-          parent={this}
         />
       </View>
     );

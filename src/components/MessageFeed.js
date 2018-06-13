@@ -3,6 +3,7 @@ import { FlatList } from 'react-native';
 import MessageFeedItem from './MessageFeedItem';
 import ListSeparator from '../components/ListSeparator';
 import PropTypes from 'prop-types';
+import Separator from './Separator';
 
 const propTypes = {
   getMessages: PropTypes.func.isRequired,
@@ -27,9 +28,8 @@ export default class MessageFeed extends Component {
   async handleLoadMessages() {
     try {
       this.setState({ refreshing: true });
-      const messages = this.props.parent
-        ? await this.props.getMessages.call(this.props.parent)
-        : await this.props.getMessages();
+      const messages = await this.props.getMessages();
+      console.log('loaded message feed, here are the messages', messages);
       this.setState({ refreshing: false, errorMessage: '', messages });
     } catch (error) {
       this.setState({
@@ -41,7 +41,7 @@ export default class MessageFeed extends Component {
 
   render() {
     const { messages, refreshing } = this.state;
-    const { getMessages, getOlderMessages, navigator } = this.props;
+    const { getOlderMessages, navigator } = this.props;
     return (
       <FlatList
         data={messages}

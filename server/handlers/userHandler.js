@@ -27,7 +27,7 @@ const handleGetUserMessages = async (req, res) => {
     const userId = req.get('token');
     const messageIds = await getUserMessageIds(userId);
     const messages = await getMessageDataFromIds(messageIds);
-    return messages;
+    res.json(messages);
   } catch (error) {
     res
       .status(500)
@@ -40,24 +40,13 @@ const handleGetMessagesUserRepliedTo = async (req, res) => {
     const userId = req.get('token');
     const messageIds = await getIdsOfMessagesUserRepliedTo(userId);
     const messages = await getMessageDataFromIds(messageIds);
-    return messages;
+    res.json(messages);
   } catch (error) {
     res
       .status(500)
       .json({ message: 'Server error when getting messages user replied to' });
   }
 };
-
-// const handleGetUserInfo = async (req, res) => {
-//   try {
-//     const userId = req.get('token');
-//     const userData = await getUser(userId);
-//     const { score } = userData;
-//     res.json({ score });
-//   } catch (error) {
-//     res.status(500).json({ message: 'Server error getting that user' });
-//   }
-// };
 
 const handleGetUserScore = async (req, res) => {
   try {
