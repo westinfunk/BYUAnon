@@ -43,7 +43,12 @@ export default class ReplyFeed extends Component {
   }
 
   renderHeadMessage() {
-    return <MessageDisplay {...this.props} />;
+    return (
+      <MessageDisplay
+        {...this.props}
+        reloadReplies={this.getReplies.bind(this)}
+      />
+    );
   }
 
   renderSeparator() {

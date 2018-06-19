@@ -26,7 +26,7 @@ const calculateTimeDisplay = (timestamp) => {
   } else if (secondsDifference < 60 * 60 * 24) {
     return Math.floor(secondsDifference / 60 / 60) + 'h';
   } else {
-    return Math.floor(secondsDifference / 60 / 60 / 24 / 1000) + 'd';
+    return Math.floor(secondsDifference / 60 / 60 / 24) + 'd';
   }
 };
 

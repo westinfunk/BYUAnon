@@ -19,8 +19,7 @@ const propTypes = {
   score: PropTypes.number,
   upvote: PropTypes.func.isRequired,
   downvote: PropTypes.func.isRequired,
-  removeUpvote: PropTypes.func.isRequired,
-  removeDownvote: PropTypes.func.isRequired
+  removeVote: PropTypes.func.isRequired
 };
 
 const defaultProps = {
@@ -56,7 +55,7 @@ export default class ScoreBox extends Component {
           score: prevState.score - 1
         };
       });
-      this.props.removeUpvote();
+      this.props.removeVote();
     } else if (this.state.vote == 'down') {
       this.setState((prevState) => {
         return {
@@ -84,7 +83,7 @@ export default class ScoreBox extends Component {
           score: prevState.score + 1
         };
       });
-      this.props.removeDownvote();
+      this.props.removeVote();
     } else if (this.state.vote == 'up') {
       this.setState((prevState) => {
         return {
@@ -156,11 +155,8 @@ const Styles = StyleSheet.create({
     fontSize: 20,
     fontFamily: 'Nunito-SemiBold',
     color: PRIMARY
-  },
-  score: {},
-  upvote: {},
-  downvote: {}
+  }
 });
 
 ScoreBox.propTypes = propTypes;
-ScoreBox.defaultProps = propTypes;
+ScoreBox.defaultProps = defaultProps;

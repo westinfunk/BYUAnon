@@ -14,6 +14,7 @@ const {
 
 const handlePostMessage = async (req, res) => {
   try {
+    console.log('new message', req.body);
     const userId = req.get('token');
     const messageText = req.body.text;
     const ip = req.ip;
@@ -29,8 +30,12 @@ const handlePostMessage = async (req, res) => {
 
 const handleUpvoteMessage = async (req, res) => {
   try {
+    console.log('FUCK');
     const userId = req.get('token');
+    console.log('token is ', userId);
     const messageId = req.params.id;
+    console.log('message id is', messageId);
+    console.log('trying to upvote', messsageId, userId);
     const authorId = await getMessageAuthorId(messageId);
     const removedDownvote = await removeDownvoteFromMessage(messageId, userId);
     if (removedDownvote) {
@@ -40,6 +45,7 @@ const handleUpvoteMessage = async (req, res) => {
     if (addedUpvote) {
       await incrementUserScore(authorId);
     }
+    console.log('upvote was added', messageId, userId);
     res.json({ message: 'OK' });
   } catch (error) {
     res.status(500).json({ message: 'Server error when upvoting message' });
@@ -65,7 +71,7 @@ const handleDownvoteMessage = async (req, res) => {
   }
 };
 
-const handleRemoveDownvoteFromMessage = async (req, res) => {
+const handleRemoveVoteFromMessage = async (req, res) => {
   try {
     const userId = req.get('token');
     const messageId = req.params.id;
@@ -74,19 +80,6 @@ const handleRemoveDownvoteFromMessage = async (req, res) => {
     if (removedDownvote) {
       await incrementUserScore(authorId);
     }
-    res.send('OK');
-  } catch (error) {
-    res
-      .status(500)
-      .json({ message: 'Server error removing downvote from message' });
-  }
-};
-
-const handleRemoveUpvoteFromMessage = async (req, res) => {
-  try {
-    const userId = req.get('token');
-    const messageId = req.params.id;
-    const authorId = await getMessageAuthorId(messageId);
     const removedUpvote = await removeUpvoteFromMessage(messageId, userId);
     if (removedUpvote) {
       await decrementUserScore(authorId);
@@ -95,9 +88,43 @@ const handleRemoveUpvoteFromMessage = async (req, res) => {
   } catch (error) {
     res
       .status(500)
-      .json({ message: 'Server error removing upvote from message' });
+      .json({ message: 'Server error removing vote from message' });
   }
 };
+
+// const handleRemoveDownvoteFromMessage = async (req, res) => {
+//   try {
+//     const userId = req.get('token');
+//     const messageId = req.params.id;
+//     const authorId = await getMessageAuthorId(messageId);
+//     const removedDownvote = await removeDownvoteFromMessage(messageId, userId);
+//     if (removedDownvote) {
+//       await incrementUserScore(authorId);
+//     }
+//     res.send('OK');
+//   } catch (error) {
+//     res
+//       .status(500)
+//       .json({ message: 'Server error removing downvote from message' });
+//   }
+// };
+
+// const handleRemoveUpvoteFromMessage = async (req, res) => {
+//   try {
+//     const userId = req.get('token');
+//     const messageId = req.params.id;
+//     const authorId = await getMessageAuthorId(messageId);
+//     const removedUpvote = await removeUpvoteFromMessage(messageId, userId);
+//     if (removedUpvote) {
+//       await decrementUserScore(authorId);
+//     }
+//     res.send('OK');
+//   } catch (error) {
+//     res
+//       .status(500)
+//       .json({ message: 'Server error removing upvote from message' });
+//   }
+// };
 
 const handleDeleteMessage = async (req, res) => {
   try {
@@ -121,5 +148,6 @@ module.exports = {
   handlePostMessage,
   handleUpvoteMessage,
   handleDownvoteMessage,
-  handleDeleteMessage
+  handleDeleteMessage,
+  handleRemoveVoteFromMessage
 };

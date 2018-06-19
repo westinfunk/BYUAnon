@@ -19,12 +19,34 @@ export default class MessageScoreBox extends Component {
     this.removeDownvoteFromMessage = this.removeDownvoteFromMessage.bind(this);
   }
 
-  upvoteMessage() {
-    //
+  async upvoteMessage() {
+    const { id } = this.props;
+    try {
+      const upvoteMessage = await post(`/message/${id}/upvote`);
+      return upvoteMessage;
+    } catch (error) {
+      console.error('Unable to upvote message', error);
+    }
   }
 
-  downvoteMessage() {
-    //
+  async downvoteMessage() {
+    const { id } = this.props;
+    try {
+      const downvoteMessage = await post(`/message/${id}/downvote`);
+      return downvoteMessage;
+    } catch (error) {
+      console.error('Unable to downvote message', error);
+    }
+  }
+
+  async removeVote() {
+    const { id } = this.props;
+    try {
+      const removedVote = await post(`message/${id}/removeVote`);
+      return removedVote;
+    } catch (error) {
+      console.error('Unable to remove vote');
+    }
   }
 
   removeUpvoteFromMessage() {
@@ -41,8 +63,7 @@ export default class MessageScoreBox extends Component {
         {...this.props}
         upvote={this.upvoteMessage}
         downvote={this.downvoteMessage}
-        removeUpvote={this.removeUpvoteFromMessage}
-        removeDownvote={this.removeDownvoteFromMessage}
+        removeVote={this.removeVote}
       />
     );
   }

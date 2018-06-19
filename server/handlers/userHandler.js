@@ -3,6 +3,7 @@ const {
   getUserMessageIds,
   getIdsOfMessagesUserRepliedTo,
   getUser,
+  checkIfUserExists,
   getUserScore
 } = require('../models/userModel');
 
@@ -52,8 +53,14 @@ const handleGetUserScore = async (req, res) => {
   try {
     const userId = req.get('token');
     console.log('look who it is its', userId);
-    const score = await getUserScore(userId);
-    console.log('score is ', score);
+    let score = await getUserScore(userId);
+    if (isNaN(score)) {
+      const userExists = await checkIfUserExists(userId);
+      if (!userExists) {
+        await addNewUser(req.ip, userId);
+      }
+      score = 100;
+    }
     res.send(JSON.stringify(score));
   } catch (error) {
     res.status(500).json({ message: 'Server error getting user score' });

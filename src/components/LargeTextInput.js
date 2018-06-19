@@ -28,6 +28,10 @@ export default class LargeTextInput extends Component {
     this.handleChangeText = this.handleChangeText.bind(this);
   }
 
+  componentDidMount() {
+    console.log(this.props, 'those were the props');
+  }
+
   handleChangeText(text) {
     this.setState({
       text,

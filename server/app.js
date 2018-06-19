@@ -10,14 +10,14 @@ const {
   handleGetUserMessages,
   handleGetUserReplies,
   handleGetMessagesUserRepliedTo,
-  handleGetUserInfo,
   handleGetUserScore
 } = require('./handlers/userHandler');
 const {
   handlePostMessage,
   handleUpvoteMessage,
   handleDownvoteMessage,
-  handleDeleteMessage
+  handleDeleteMessage,
+  handleRemoveVoteFromMessage
 } = require('./handlers/messageHandler');
 const {
   handleGetMessageReplies,
@@ -44,6 +44,8 @@ app.post('/message/:id/upvote', handleUpvoteMessage);
 
 app.post('/message/:id/downvote', handleDownvoteMessage);
 
+app.post('/message/:id/removeVote', handleRemoveVoteFromMessage);
+
 app.delete('/message/:id', handleDeleteMessage);
 
 app.get('/user/score', handleGetUserScore);
@@ -57,6 +59,8 @@ app.get('/user/reply', handleGetMessagesUserRepliedTo);
 app.post('reply/:id/downvote', handleDownvoteReply);
 
 app.post('reply/:id/upvote', handleUpvoteReply);
+
+app.post('reply/:id/removeVote', handleUpvoteReply);
 
 app.delete('reply/:id', handleDeleteReply);
 

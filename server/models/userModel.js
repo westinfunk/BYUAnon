@@ -22,15 +22,38 @@ const { handleError } = require('../utils');
 
 const getUser = async (userId) => {
   try {
-    return redis.hgetall('user:' + userId);
-  } catch (erorr) {
+    return await redis.hgetall('user:' + userId);
+  } catch (error) {
     handleError(error);
   }
 };
 
-const addNewUser = async (ip) => {
+const checkIfUserExists = async (userId) => {
   try {
-    const userId = await generateId('user');
+    return await redis.exists('user:' + userId);
+  } catch (error) {
+    handleError(error);
+  }
+};
+
+const _generateUserId = async () => {
+  let generatedId = await generateId('user');
+  let userExistsAlready = await checkIfUserExists(generatedId);
+  while (userExistsAlready) {
+    /*
+    * Failsafe to make sure a device isn't assigned the id
+    * of an already-existing user
+    * Ideally userExistsAlready will never be true
+    */
+    generatedId = await generateId('user');
+    userExistsAlready = await checkIfUserExists(generatedId);
+  }
+  return generatedId;
+};
+
+const addNewUser = async (ip, userId) => {
+  try {
+    userId = userId || (await _generateUserId());
     const timestamp = generateTimestamp();
     const userStorageObject = {
       timestamp,
@@ -121,14 +144,6 @@ const modifyUserScore = async (userId, amount) => {
   }
 };
 
-const getUserSCore = async (userId) => {
-  try {
-    return await redis.hget('user:' + userId, 'score');
-  } catch (error) {
-    handleError(error);
-  }
-};
-
 module.exports = {
   getUser,
   getUserMessageIds,
@@ -137,5 +152,6 @@ module.exports = {
   incrementUserScore,
   decrementUserScore,
   addNewUser,
+  checkIfUserExists,
   getIdsOfMessagesUserRepliedTo
 };

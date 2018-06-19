@@ -24,7 +24,15 @@ export default class FeedItem extends Component {
 
   renderReplyCount() {
     const { replyCount } = this.props;
-    return replyCount ? replyCount + ' replies' : '';
+    let replyCountText = '';
+    if (replyCount > 1) {
+      replyCountText = replyCount + ' replies';
+    } else if (replyCount == 1) {
+      replyCountText = '1 reply';
+    } else {
+      replyCountText = '';
+    }
+    return replyCountText;
   }
 
   render() {

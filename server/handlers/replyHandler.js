@@ -51,6 +51,7 @@ const handlePostReplyToMessage = async (req, res) => {
     const messageId = req.params.id;
     const userId = req.get('token');
     const ip = req.ip;
+    console.log('subimtting a reply', messageId, userId);
     const text = req.body.text;
     await postMessageReply(text, messageId, userId, ip);
     res.json({ message: 'OK' });
